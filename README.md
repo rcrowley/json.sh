@@ -23,8 +23,7 @@ As a library:
 TODO
 ----
 
-* Support for backspace, form feed, newline, and carriage return escapes.
-* Support for Unicode characters specified by their codepoints: `\uXXXX`.
+* Whole-ass the half-assed escape sequence and Unicode support.
 
 TODONE
 ------
@@ -38,6 +37,8 @@ TODONE
   * Negative.
   * Scientific notation.
 * Strings.
+  * Backspace, form feed, newline, and carriage return escapes.
+  * Unicode characters specified by their codepoints: `\uXXXX`.
 
 License
 -------
