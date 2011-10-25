@@ -270,8 +270,8 @@ to the containing scope.</p>
 </td><td class=code><div class=highlight><pre>
 		<span class="s2">&quot;object-exit&quot;</span><span class="o">)</span> <span class="c">#exit;;</span>
 			<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
-				<span class="s2">&quot;,&quot;</span><span class="o">)</span> <span class="nb">exit </span>1;;
-				<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit </span>2;;
+				<span class="s2">&quot;,&quot;</span><span class="o">)</span> <span class="nb">exit </span>101;;
+				<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit </span>102;;
 				*<span class="o">)</span> <span class="nb">exit </span>0;;
 			<span class="k">esac</span>;;
 
@@ -311,10 +311,10 @@ key appended to it before the parser continues.</p>
 						<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-exit&quot;</span>
 						_json
 					<span class="o">)</span> <span class="o">||</span> <span class="k">case</span> <span class="s2">&quot;$?&quot;</span> in
-						0<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span>;;
-						1<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;,&quot;</span> _json_char;;
-						2<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;}&quot;</span> _json_char;;
-					<span class="k">esac</span>;;
+						101<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;,&quot;</span> _json_char;;
+						102<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;}&quot;</span> _json_char;;
+					<span class="k">esac</span>
+<span class="k">					</span><span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span>;;
 				<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
 				*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
 			<span class="k">esac</span>;;
@@ -457,12 +457,16 @@ are simple because they only require one character of
 history.  Unicode codepoint escapes require more.  The
 strategy there is to add states to the machine.</p>
 
+<p>TODO It'd be nice to decode all escape sequences, including
+Unicode codepoints but that would definitely ruin the
+line-oriented thing we've got goin' on.</p>
+
 </td><td class=code><div class=highlight><pre>
 		<span class="s2">&quot;string&quot;</span><span class="o">)</span>
 			<span class="k">case</span> <span class="s2">&quot;$_J_PREV_C$_J_C&quot;</span> in
 				<span class="s2">&quot;\\\&quot;&quot;</span>|<span class="s2">&quot;\\/&quot;</span>|<span class="s2">&quot;\\\\&quot;</span><span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
-				<span class="s2">&quot;\\b&quot;</span>|<span class="s2">&quot;\\f&quot;</span>|<span class="s2">&quot;\\n&quot;</span>|<span class="s2">&quot;\\r&quot;</span><span class="o">)</span> ;; <span class="c"># TODO</span>
-				<span class="s2">&quot;\\u&quot;</span><span class="o">)</span> ;; <span class="c"># TODO</span>
+				<span class="s2">&quot;\\b&quot;</span>|<span class="s2">&quot;\\f&quot;</span>|<span class="s2">&quot;\\n&quot;</span>|<span class="s2">&quot;\\r&quot;</span><span class="o">)</span>  <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V\\\\$_J_C&quot;</span>;;
+				<span class="s2">&quot;\\u&quot;</span><span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V\\\\$_J_C&quot;</span>;;
 				*<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
 					<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
 					<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME string $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
