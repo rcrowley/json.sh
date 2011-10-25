@@ -98,9 +98,9 @@ _json_char() {
 				"array-even")
 					case "$_J_C" in
 						",")
-							_J_DIRNAME="$(dirname "$_J_PATHNAME")"
+							_J_DIRNAME="${_J_PATHNAME%"/"*}"
 								[ "$_J_DIRNAME" = "/" ] && _J_DIRNAME=""
-							_J_BASENAME="$(basename "$_J_PATHNAME")"
+							_J_BASENAME="${_J_PATHNAME##*"/"}"
 							_J_BASENAME="$(($_J_BASENAME + 1))"
 							_J_PATHNAME="$_J_DIRNAME/$_J_BASENAME"
 							_J_STATE="array-odd"
