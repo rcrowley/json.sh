@@ -24,6 +24,15 @@
 
 </pre></div></td></tr><tr><td class=docs>
 
+<p>Most users will be happy with the default '/' separator that makes trees
+of keys look like filesystem paths but that breaks down if keys can
+contain slashes.  In that case, set <code>JSON_SEPARATOR</code> to desired character.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="o">[</span> -z <span class="s2">&quot;$JSON_SEPARATOR&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_S</span><span class="o">=</span><span class="s2">&quot;/&quot;</span> <span class="o">||</span> <span class="nv">_J_S</span><span class="o">=</span><span class="s2">&quot;$JSON_SEPARATOR&quot;</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
 <p>File descriptor 3 is commandeered for debug output, which may end up being
 forwarded to standard error.</p>
 
@@ -62,7 +71,7 @@ the machine, and the state to which the machine returns after
 completing a key or value.</p>
 
 </td><td class=code><div class=highlight><pre>
-	<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;/&quot;</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span>
+	<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_S&quot;</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -162,11 +171,11 @@ they are parsed in a subshell to protect the containing scope.</p>
 				<span class="s2">&quot;array-even&quot;</span><span class="o">)</span>
 					<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
 						<span class="s2">&quot;,&quot;</span><span class="o">)</span>
-							<span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;$(dirname &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
-								<span class="o">[</span> <span class="s2">&quot;$_J_DIRNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
-							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(basename &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
+							<span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;${_J_PATHNAME%&quot;</span><span class="nv">$_J_S</span><span class="s2">&quot;*}&quot;</span>
+							<span class="o">[</span> <span class="s2">&quot;$_J_DIRNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;$_J_S&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;${_J_PATHNAME##*&quot;</span><span class="nv">$_J_S</span><span class="s2">&quot;}&quot;</span>
 							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(($_J_BASENAME + 1))&quot;</span>
-							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_DIRNAME/$_J_BASENAME&quot;</span>
+							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_DIRNAME$_J_S$_J_BASENAME&quot;</span>
 							<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;array-odd&quot;</span>
 							<span class="k">continue</span>;;
 						<span class="s2">&quot;]&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
