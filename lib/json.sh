@@ -190,8 +190,8 @@ _json_char() {
 		# to the containing scope.
 		"object-exit") #exit;;
 			case "$_J_C" in
-				",") exit 1;;
-				"}") exit 2;;
+				",") exit 101;;
+				"}") exit 102;;
 				*) exit 0;;
 			esac;;
 
@@ -223,10 +223,10 @@ _json_char() {
 						_J_STATE_DEFAULT="object-exit"
 						_json
 					) || case "$?" in
-						0) _J_STATE="object-even";;
-						1) _J_STATE="object-even" _J_C="," _json_char;;
-						2) _J_STATE="object-even" _J_C="}" _json_char;;
-					esac;;
+						101) _J_STATE="object-even" _J_C="," _json_char;;
+						102) _J_STATE="object-even" _J_C="}" _json_char;;
+					esac
+					_J_STATE="object-even";;
 				"	"|""|" ") ;;
 				*) _json_die "syntax: $_J_PATHNAME";;
 			esac;;
