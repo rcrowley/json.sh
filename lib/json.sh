@@ -125,7 +125,7 @@ _json_char() {
 				"n") _J_STATE="null" _J_V="$_J_C";;
 				"{")
 					(
-						_J_STATE="object" _J_STATE_DEFAULT="object"
+						_J_STATE="object-0" _J_STATE_DEFAULT="object-even"
 						_json
 					)
 					exit;;
@@ -147,7 +147,7 @@ _json_char() {
 			esac;;
 
 		# Object values are relatively more complex than array values.
-		# They begin in the "object" state, which is almost but not
+		# They begin in the "object-0" state, which is almost but not
 		# quite a subset of the "whitespace" state for strings.  When
 		# a string is encountered it is parsed as usual but the parser
 		# is set to return to the "object-value" state afterward.
@@ -158,22 +158,55 @@ _json_char() {
 		# The parser will return to this "object" state later to
 		# either consume a comma and go around again or exit the
 		# subshell in which this object has been parsed.
-		"object")
+		"object-0")
 			case "$_J_C" in
 				"\"")
 					_J_FD=4
 					_J_STATE="string"
 					_J_STATE_DEFAULT="object-value"
 					_J_V="";;
-				",") ;; # TODO Should imply another key is coming.
 				"}") exit;;
 				"	"|""|" ") ;;
 				*) _json_die "syntax: $_J_PATHNAME";;
 			esac;;
 
-		# Object values are going to have to return from whence they
-		# came and use the "object-exit" state to do so.
-		"object-exit") exit;;
+		# "object-even" is like "object-0" but additionally commas are
+		# consumed to enforce the another key/value pair is coming.
+		"object-even")
+			case "$_J_C" in
+				"\"")
+					_J_FD=4
+					_J_STATE="string"
+					_J_STATE_DEFAULT="object-value"
+					_J_V="";;
+				",") _J_STATE="object-odd";;
+				"}") exit;;
+				"	"|""|" ") ;;
+				*) _json_die "syntax: $_J_PATHNAME";;
+			esac;;
+
+		# Object values have to return from whence they came.  They use
+		# the "object-exit" state to signal the last character consumed
+		# to the containing scope.
+		"object-exit") #exit;;
+			case "$_J_C" in
+				",") exit 1;;
+				"}") exit 2;;
+				*) exit 0;;
+			esac;;
+
+		# "object-even" is like "object-0" but cannot consume a closing
+		# brace because it has just consumed a comma.
+		"object-odd")
+			case "$_J_C" in
+				"\"")
+					_J_FD=4
+					_J_STATE="string"
+					_J_STATE_DEFAULT="object-value"
+					_J_V="";;
+				"	"|""|" ") ;;
+				*) _json_die "syntax: $_J_PATHNAME";;
+			esac;;
 
 		# After a string key has been consumed, the state machine
 		# progresses here where a colon and a value are parsed.  The
@@ -189,8 +222,11 @@ _json_char() {
 						_J_STATE="whitespace"
 						_J_STATE_DEFAULT="object-exit"
 						_json
-					)
-					_J_STATE="object";;
+					) || case "$?" in
+						0) _J_STATE="object-even";;
+						1) _J_STATE="object-even" _J_C="," _json_char;;
+						2) _J_STATE="object-even" _J_C="}" _json_char;;
+					esac;;
 				"	"|""|" ") ;;
 				*) _json_die "syntax: $_J_PATHNAME";;
 			esac;;
