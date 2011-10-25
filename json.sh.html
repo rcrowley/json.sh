@@ -153,20 +153,25 @@ the closing bracket is encountered.</p>
 they are parsed in a subshell to protect the containing scope.</p>
 
 </td><td class=code><div class=highlight><pre>
-		<span class="s2">&quot;array&quot;</span>|<span class="s2">&quot;whitespace&quot;</span><span class="o">)</span>
-			<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$_J_STATE&quot;</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span> <span class="o">]</span>
-			<span class="k">then</span>
-<span class="k">				case</span> <span class="s2">&quot;$_J_C&quot;</span> in
-					<span class="s2">&quot;,&quot;</span><span class="o">)</span> <span class="c"># TODO Should not be allowed following &quot;[&quot;.</span>
-						<span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;$(dirname &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
-						<span class="o">[</span> <span class="s2">&quot;$_J_DIRNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
-						<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(basename &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
-						<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(($_J_BASENAME + 1))&quot;</span>
-						<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_DIRNAME/$_J_BASENAME&quot;</span>
-						<span class="k">continue</span>;;
-					<span class="s2">&quot;]&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
-				<span class="k">esac</span>
-<span class="k">			fi</span>
+		<span class="s2">&quot;array-0&quot;</span>|<span class="s2">&quot;array-even&quot;</span>|<span class="s2">&quot;array-odd&quot;</span>|<span class="s2">&quot;whitespace&quot;</span><span class="o">)</span>
+			<span class="k">case</span> <span class="s2">&quot;$_J_STATE&quot;</span> in
+				<span class="s2">&quot;array-0&quot;</span><span class="o">)</span>
+					<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+						<span class="s2">&quot;]&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+					<span class="k">esac</span>;;
+				<span class="s2">&quot;array-even&quot;</span><span class="o">)</span>
+					<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+						<span class="s2">&quot;,&quot;</span><span class="o">)</span>
+							<span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;$(dirname &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
+								<span class="o">[</span> <span class="s2">&quot;$_J_DIRNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(basename &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
+							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(($_J_BASENAME + 1))&quot;</span>
+							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_DIRNAME/$_J_BASENAME&quot;</span>
+							<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;array-odd&quot;</span>
+							<span class="k">continue</span>;;
+						<span class="s2">&quot;]&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+					<span class="k">esac</span>;;
+			<span class="k">esac</span>
 <span class="k">			case</span> <span class="s2">&quot;$_J_C&quot;</span> in
 				<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
 				<span class="s2">&quot;-&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-negative&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
@@ -176,7 +181,7 @@ they are parsed in a subshell to protect the containing scope.</p>
 					<span class="o">(</span>
 						<span class="o">[</span> <span class="s2">&quot;$_J_PATHNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 						<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_PATHNAME/0&quot;</span>
-						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;array&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;array&quot;</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;array-0&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;array-even&quot;</span>
 						_json
 					<span class="o">)</span>
 					<span class="nb">exit</span>;;
@@ -184,7 +189,7 @@ they are parsed in a subshell to protect the containing scope.</p>
 				<span class="s2">&quot;n&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;null&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
 				<span class="s2">&quot;{&quot;</span><span class="o">)</span>
 					<span class="o">(</span>
-						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-0&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span>
 						_json
 					<span class="o">)</span>
 					<span class="nb">exit</span>;;
@@ -212,7 +217,7 @@ raise syntax errors as soon as the input goes south.</p>
 </pre></div></td></tr><tr><td class=docs>
 
 <p>Object values are relatively more complex than array values.
-They begin in the "object" state, which is almost but not
+They begin in the "object-0" state, which is almost but not
 quite a subset of the "whitespace" state for strings.  When
 a string is encountered it is parsed as usual but the parser
 is set to return to the "object-value" state afterward.</p>
@@ -225,14 +230,13 @@ either consume a comma and go around again or exit the
 subshell in which this object has been parsed.</p>
 
 </td><td class=code><div class=highlight><pre>
-		<span class="s2">&quot;object&quot;</span><span class="o">)</span>
+		<span class="s2">&quot;object-0&quot;</span><span class="o">)</span>
 			<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
 				<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
 					<span class="nv">_J_FD</span><span class="o">=</span>4
 					<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
 					<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-value&quot;</span>
 					<span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
-				<span class="s2">&quot;,&quot;</span><span class="o">)</span> ;; <span class="c"># TODO Should imply another key is coming.</span>
 				<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
 				<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
 				*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
@@ -240,11 +244,53 @@ subshell in which this object has been parsed.</p>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Object values are going to have to return from whence they
-came and use the "object-exit" state to do so.</p>
+<p>"object-even" is like "object-0" but additionally commas are
+consumed to enforce the another key/value pair is coming.</p>
 
 </td><td class=code><div class=highlight><pre>
-		<span class="s2">&quot;object-exit&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+		<span class="s2">&quot;object-even&quot;</span><span class="o">)</span>
+			<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+				<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
+					<span class="nv">_J_FD</span><span class="o">=</span>4
+					<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
+					<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-value&quot;</span>
+					<span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
+				<span class="s2">&quot;,&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-odd&quot;</span>;;
+				<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+				<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
+				*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
+			<span class="k">esac</span>;;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Object values have to return from whence they came.  They use
+the "object-exit" state to signal the last character consumed
+to the containing scope.</p>
+
+</td><td class=code><div class=highlight><pre>
+		<span class="s2">&quot;object-exit&quot;</span><span class="o">)</span> <span class="c">#exit;;</span>
+			<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+				<span class="s2">&quot;,&quot;</span><span class="o">)</span> <span class="nb">exit </span>1;;
+				<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit </span>2;;
+				*<span class="o">)</span> <span class="nb">exit </span>0;;
+			<span class="k">esac</span>;;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>"object-even" is like "object-0" but cannot consume a closing
+brace because it has just consumed a comma.</p>
+
+</td><td class=code><div class=highlight><pre>
+		<span class="s2">&quot;object-odd&quot;</span><span class="o">)</span>
+			<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+				<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
+					<span class="nv">_J_FD</span><span class="o">=</span>4
+					<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
+					<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-value&quot;</span>
+					<span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
+				<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
+				*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
+			<span class="k">esac</span>;;
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -264,8 +310,11 @@ key appended to it before the parser continues.</p>
 						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span>
 						<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-exit&quot;</span>
 						_json
-					<span class="o">)</span>
-					<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>;;
+					<span class="o">)</span> <span class="o">||</span> <span class="k">case</span> <span class="s2">&quot;$?&quot;</span> in
+						0<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span>;;
+						1<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;,&quot;</span> _json_char;;
+						2<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object-even&quot;</span> <span class="nv">_J_C</span><span class="o">=</span><span class="s2">&quot;}&quot;</span> _json_char;;
+					<span class="k">esac</span>;;
 				<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
 				*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
 			<span class="k">esac</span>;;
