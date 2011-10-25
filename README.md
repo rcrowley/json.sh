@@ -20,6 +20,10 @@ As a library:
 	. "lib/json.sh"
 	json <"tests/object-complex.json"
 
+Overriding the default use of `/` as the key separator:
+
+	JSON_SEPARATOR="^" json.sh <"tests/object-complex.json"
+
 TODO
 ----
 

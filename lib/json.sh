@@ -2,6 +2,11 @@
 
 set -e
 
+# Most users will be happy with the default '/' separator that makes trees
+# of keys look like filesystem paths but that breaks down if keys can
+# contain slashes.  In that case, set `JSON_SEPARATOR` to desired character.
+[ -z "$JSON_SEPARATOR" ] && _J_S="/" || _J_S="$JSON_SEPARATOR"
+
 # File descriptor 3 is commandeered for debug output, which may end up being
 # forwarded to standard error.
 [ -z "$JSON_DEBUG" ] && exec 3>/dev/null || exec 3>&2
@@ -22,7 +27,7 @@ json() {
 	# the keys in the tree at any point in time, the current state of
 	# the machine, and the state to which the machine returns after
 	# completing a key or value.
-	_J_PATHNAME="/" _J_STATE="whitespace" _J_STATE_DEFAULT="whitespace"
+	_J_PATHNAME="$_J_S" _J_STATE="whitespace" _J_STATE_DEFAULT="whitespace"
 
 	# IFS must only contain '\n' so as to be able to read space and tab
 	# characters from standard input one-at-a-time.  The easiest way to
@@ -98,11 +103,11 @@ _json_char() {
 				"array-even")
 					case "$_J_C" in
 						",")
-							_J_DIRNAME="${_J_PATHNAME%"/"*}"
-								[ "$_J_DIRNAME" = "/" ] && _J_DIRNAME=""
-							_J_BASENAME="${_J_PATHNAME##*"/"}"
+							_J_DIRNAME="${_J_PATHNAME%"$_J_S"*}"
+							[ "$_J_DIRNAME" = "$_J_S" ] && _J_DIRNAME=""
+							_J_BASENAME="${_J_PATHNAME##*"$_J_S"}"
 							_J_BASENAME="$(($_J_BASENAME + 1))"
-							_J_PATHNAME="$_J_DIRNAME/$_J_BASENAME"
+							_J_PATHNAME="$_J_DIRNAME$_J_S$_J_BASENAME"
 							_J_STATE="array-odd"
 							continue;;
 						"]") exit;;
