@@ -89,20 +89,25 @@ _json_char() {
 		#
 		# Objects are not parsed as a superset of open whitespace but
 		# they are parsed in a subshell to protect the containing scope.
-		"array"|"whitespace")
-			if [ "$_J_STATE" = "array" ]
-			then
-				case "$_J_C" in
-					",") # TODO Should not be allowed following "[".
-						_J_DIRNAME="$(dirname "$_J_PATHNAME")"
-						[ "$_J_DIRNAME" = "/" ] && _J_DIRNAME=""
-						_J_BASENAME="$(basename "$_J_PATHNAME")"
-						_J_BASENAME="$(($_J_BASENAME + 1))"
-						_J_PATHNAME="$_J_DIRNAME/$_J_BASENAME"
-						continue;;
-					"]") exit;;
-				esac
-			fi
+		"array-0"|"array-even"|"array-odd"|"whitespace")
+			case "$_J_STATE" in
+				"array-0")
+					case "$_J_C" in
+						"]") exit;;
+					esac;;
+				"array-even")
+					case "$_J_C" in
+						",")
+							_J_DIRNAME="$(dirname "$_J_PATHNAME")"
+								[ "$_J_DIRNAME" = "/" ] && _J_DIRNAME=""
+							_J_BASENAME="$(basename "$_J_PATHNAME")"
+							_J_BASENAME="$(($_J_BASENAME + 1))"
+							_J_PATHNAME="$_J_DIRNAME/$_J_BASENAME"
+							_J_STATE="array-odd"
+							continue;;
+						"]") exit;;
+					esac;;
+			esac
 			case "$_J_C" in
 				"\"") _J_STATE="string" _J_V="";;
 				"-") _J_STATE="number-negative" _J_V="$_J_C";;
@@ -112,7 +117,7 @@ _json_char() {
 					(
 						[ "$_J_PATHNAME" = "/" ] && _J_PATHNAME=""
 						_J_PATHNAME="$_J_PATHNAME/0"
-						_J_STATE="array" _J_STATE_DEFAULT="array"
+						_J_STATE="array-0" _J_STATE_DEFAULT="array-even"
 						_json
 					)
 					exit;;
