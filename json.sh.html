@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-eqiv='content-type' content='text/html;charset=utf-8'>
+    <title>json.sh</title>
+    <link rel=stylesheet href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id=container>
+    <div id=background></div>
+    <table cellspacing=0 cellpadding=0>
+    <thead>
+      <tr>
+        <th class=docs><h1>json.sh</h1></th>
+        <th class=code></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td class='docs'><p>json.sh, a pure-shell JSON parser</p>
+
+</td><td class=code><div class=highlight><pre>
+
+<span class="nb">set</span> -e
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>File descriptor 3 is commandeered for debug output, which may end up being
+forwarded to standard error.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="o">[</span> -z <span class="s2">&quot;$JSON_DEBUG&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">exec </span>3&gt;/dev/null <span class="o">||</span> <span class="nb">exec </span>3&gt;&amp;2
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>File descriptor 4 is commandeered for use as a sink for literal and
+variable output of (inverted) sections that are not destined for standard
+output because their condition is not met.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="nb">exec </span>4&gt;/dev/null
+
+json<span class="o">()</span> <span class="o">{</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Initialize the file descriptor to be used to emit characters.  At
+times this value will be 4 to send output to <code>/dev/null</code>.</p>
+
+</td><td class=code><div class=highlight><pre>
+	<span class="nv">_J_FD</span><span class="o">=</span>1
+
+	<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;/&quot;</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>IFS must only contain '\n' so as to be able to read space and tab
+characters from standard input one-at-a-time.  The easiest way to
+convince it to actually contain the correct byte, and only the
+correct byte, is to use a single-quoted literal newline.</p>
+
+</td><td class=code><div class=highlight><pre>
+	<span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;</span>
+<span class="s1">&#39;</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Consuming standard input one character at a time is quite a feat
+within the confines of POSIX shell.  Bash's <code>read</code> builtin has
+<code>-n</code> for limiting the number of characters consumed.  Here it is
+faked using <code>sed</code>(1) to place each character on its own line.
+The subtlety is that real newline characters are chomped so they
+must be indirectly detected by checking for zero-length
+characters, which is done as the character is emitted.</p>
+
+</td><td class=code><div class=highlight><pre>
+	sed -r <span class="s2">&quot;</span>
+<span class="s2">		s/./&amp;\\n/g</span>
+<span class="s2">		s/\\\\/\\\\\\\\/g</span>
+<span class="s2">	&quot;</span> | _json
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>TODO Replace the original value of IFS.  Be careful if it's unset.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+<span class="o">}</span>
+
+_json<span class="o">()</span> <span class="o">{</span>
+	<span class="k">while </span><span class="nb">read </span>_J_C
+	<span class="k">do</span>
+<span class="k">		</span><span class="nb">echo</span> <span class="s2">&quot; _J_C: $_J_C (${#_J_C}), _J_STATE: $_J_STATE&quot;</span> &gt;&amp;3
+		<span class="k">case</span> <span class="s2">&quot;$_J_STATE&quot;</span> in
+
+			<span class="s2">&quot;array&quot;</span>|<span class="s2">&quot;whitespace&quot;</span><span class="o">)</span>
+				<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$_J_STATE&quot;</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span> <span class="o">]</span>
+				<span class="k">then</span>
+<span class="k">					case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+						<span class="s2">&quot;,&quot;</span><span class="o">)</span>
+							<span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;$(dirname &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
+							<span class="o">[</span> <span class="s2">&quot;$_J_DIRNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_DIRNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(basename &quot;</span><span class="nv">$_J_PATHNAME</span><span class="s2">&quot;)&quot;</span>
+							<span class="nv">_J_BASENAME</span><span class="o">=</span><span class="s2">&quot;$(($_J_BASENAME + 1))&quot;</span>
+							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_DIRNAME/$_J_BASENAME&quot;</span>
+							<span class="k">continue</span>;;
+						<span class="s2">&quot;]&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+					<span class="k">esac</span>
+<span class="k">				fi</span>
+<span class="k">				case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
+					<span class="s2">&quot;-&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-negative&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
+					0<span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-leading-zero&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
+					<span class="o">[</span>1-9<span class="o">])</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-leading-nonzero&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
+					<span class="s2">&quot;[&quot;</span><span class="o">)</span>
+						<span class="o">(</span>
+							<span class="o">[</span> <span class="s2">&quot;$_J_PATHNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_PATHNAME/0&quot;</span>
+							<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;array&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;array&quot;</span>
+							_json
+						<span class="o">)</span>
+						<span class="nb">exit</span>;;
+					<span class="s2">&quot;f&quot;</span>|<span class="s2">&quot;t&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;boolean&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
+					<span class="s2">&quot;n&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;null&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>;;
+					<span class="s2">&quot;{&quot;</span><span class="o">)</span>
+						<span class="o">(</span>
+							<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object&quot;</span> <span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>
+							_json
+						<span class="o">)</span>
+						<span class="nb">exit</span>;;
+					<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;boolean&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_V$_J_C&quot;</span> in
+					<span class="s2">&quot;f&quot;</span>|<span class="s2">&quot;fa&quot;</span>|<span class="s2">&quot;fal&quot;</span>|<span class="s2">&quot;fals&quot;</span>|<span class="s2">&quot;t&quot;</span>|<span class="s2">&quot;tr&quot;</span>|<span class="s2">&quot;tru&quot;</span><span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;false&quot;</span>|<span class="s2">&quot;true&quot;</span><span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME boolean $_J_V$_J_C&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME boolean $_J_V$_J_C&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;object&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
+						<span class="nv">_J_FD</span><span class="o">=</span>4
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>
+						<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-value&quot;</span>
+						<span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;&quot;</span>;;
+					<span class="s2">&quot;,&quot;</span><span class="o">)</span> ;; <span class="c"># TODO Should imply another key is coming.</span>
+					<span class="s2">&quot;}&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+					<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;object-exit&quot;</span><span class="o">)</span> <span class="nb">exit</span>;;
+
+			<span class="s2">&quot;object-value&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;:&quot;</span><span class="o">)</span>
+						<span class="nv">_J_FD</span><span class="o">=</span>1
+						<span class="o">(</span>
+							<span class="o">[</span> <span class="s2">&quot;$_J_PATHNAME&quot;</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+							<span class="nv">_J_PATHNAME</span><span class="o">=</span><span class="s2">&quot;$_J_PATHNAME/$_J_V&quot;</span>
+							<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;whitespace&quot;</span>
+							<span class="nv">_J_STATE_DEFAULT</span><span class="o">=</span><span class="s2">&quot;object-exit&quot;</span>
+							_json
+						<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>;;
+					<span class="s2">&quot;	&quot;</span>|<span class="s2">&quot;&quot;</span>|<span class="s2">&quot; &quot;</span><span class="o">)</span> ;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;null&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_V$_J_C&quot;</span> in
+					<span class="s2">&quot;n&quot;</span>|<span class="s2">&quot;nu&quot;</span>|<span class="s2">&quot;nul&quot;</span><span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;null&quot;</span><span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME null null&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME null $_J_V$_J_C&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-float&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="o">[</span>0-9<span class="o">])</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;E&quot;</span>|<span class="s2">&quot;e&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME number $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-leading-nonzero&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;.&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-float&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="o">[</span>0-9<span class="o">])</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;E&quot;</span>|<span class="s2">&quot;e&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME number $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-leading-zero&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;.&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-float&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="o">[</span>0-9<span class="o">])</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME number $_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;E&quot;</span>|<span class="s2">&quot;e&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME number $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-negative&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;.&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-float&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="o">[</span>0-9<span class="o">])</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;E&quot;</span>|<span class="s2">&quot;e&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME number $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-sci&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="s2">&quot;+&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci-pos&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;-&quot;</span><span class="o">)</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci-neg&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="o">[</span>0-9<span class="o">])</span> <span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;number-sci-pos&quot;</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span> _json_die <span class="s2">&quot;syntax: $_J_PATHNAME number $_J_V$_J_C&quot;</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;number-sci-neg&quot;</span>|<span class="s2">&quot;number-sci-pos&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_C&quot;</span> in
+					<span class="o">[</span>0-9<span class="o">])</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					*<span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME number $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+				<span class="k">esac</span>;;
+
+			<span class="s2">&quot;string&quot;</span><span class="o">)</span>
+				<span class="k">case</span> <span class="s2">&quot;$_J_PREV_C$_J_C&quot;</span> in
+					<span class="s2">&quot;\\\&quot;&quot;</span>|<span class="s2">&quot;\\/&quot;</span>|<span class="s2">&quot;\\\\&quot;</span><span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+					<span class="s2">&quot;\\b&quot;</span>|<span class="s2">&quot;\\f&quot;</span>|<span class="s2">&quot;\\n&quot;</span>|<span class="s2">&quot;\\r&quot;</span><span class="o">)</span> ;; <span class="c"># TODO</span>
+					<span class="s2">&quot;\\u&quot;</span><span class="o">)</span> ;; <span class="c"># TODO</span>
+					*<span class="s2">&quot;\&quot;&quot;</span><span class="o">)</span>
+						<span class="nv">_J_STATE</span><span class="o">=</span><span class="s2">&quot;$_J_STATE_DEFAULT&quot;</span>
+						<span class="nb">echo</span> <span class="s2">&quot;$_J_PATHNAME string $_J_V&quot;</span> &gt;&amp;<span class="nv">$_J_FD</span>;;
+					*<span class="s2">&quot;\\&quot;</span><span class="o">)</span> ;;
+					*<span class="o">)</span> <span class="nv">_J_V</span><span class="o">=</span><span class="s2">&quot;$_J_V$_J_C&quot;</span>;;
+				<span class="k">esac</span>;;
+
+		<span class="k">esac</span>
+<span class="k">		</span><span class="nv">_J_PREV_C</span><span class="o">=</span><span class="s2">&quot;$_J_C&quot;</span>
+	<span class="k">done</span>
+
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Print an error message and GTFO.  The message is the concatenation
+of all the arguments to this function.</p>
+
+</td><td class=code><div class=highlight><pre>
+_json_die<span class="o">()</span> <span class="o">{</span>
+	<span class="nb">echo</span> <span class="s2">&quot;json.sh: $*&quot;</span> &gt;&amp;2
+	<span class="nb">exit </span>1
+<span class="o">}</span>
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs></td><td class='code'></td></tr>
+    </tbody>
+    </table>
+</div>
+</body>
+</html>
