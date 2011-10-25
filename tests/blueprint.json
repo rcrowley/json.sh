@@ -1,0 +1,517 @@
+{
+  "files": {
+    "/etc/apt/sources.list.d/devstructure.list": {
+      "content": "deb http://packages.devstructure.com natty main\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/apt/sources.list.d/local.list": {
+      "content": "#deb file:///home/rcrowley/work/freight/var/cache/freight natty main\n#deb-src file:///home/rcrowley/work/freight/var/cache/freight natty main\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/apt/trusted.gpg.d/devstructure.gpg": {
+      "content": "mQENBExH+WABCADPVuh2idQvP4owKpXDCzqpEl2ePvo01tXhWTEX7Opsu3w8adwpG1BB0frYY5GQ61N9D6y9zwhpWivxL975SauPVHuZ6iVoZbOaNjL8JmlscGdIhqysV3cOeEkdDT3j7Zem1pmsvZrmqnBjj9ha1XkY1kEidp5yBNCZSFx/u7ZgvOZ3I/trMijnEU2GthjbiwTkLLFmRDV/6qw/DqDXh9F/PffbbKTCJ3Kc6jrdhKe7iIhR3euQ86xI+cBLtFxxBTuH6Ywr0hmdh6StKLWBn56185ErCXjVBt35XTVR/cKFPTYVZGvneXI5cA0cAlK83KiYuIay7WkTZ+P74zPkdxBRABEBAAG0KERldlN0cnVjdHVyZSA8cGFja2FnZXNAZGV2c3RydWN0dXJlLmNvbT6JATgEEwECACIFAkxH+WACGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJELPO0+qsl06CYG0IAIVaoGOkcJibTxWMbSQVunoJvK87eZBN79Zq/tJkL5/jU4HWdu+AALJmmcKMMVI7vyvSjVQDb3qU4jLbnUHLRw4ZkFqhrkaAOfOcHzvc/rvjTj9juRQaztiOtdcWCesyUGyENTf6rZAtO3jmwMdPn0t/suThAYl8B17/6OIyu0spEwx5lG/lWYdQyGhDTvj1F6lZcphFlOwSDFY0EUheXIeWli886XxnrnxyqlGC0nmm8h5mxHZDUqp3MgDlKRcdz6yo1WLkECGaEW1EWDt01Et0Qi6EBIlFLYozejU4C0MFVfR5wmB/95kTvXjfVqQIZLVb24sGLfaVwrsx/ZQtpZywAgADuQENBExH+WABCADK3tJMpC5Zm45HH1iEgI9mlk9CPwzLqdUR5CyYSQhJJhP3kkAkl31XrnugdxnOTXPuh7vO/EN3VUFthVYr9eXt+WEmX5I2zVPxA6bMP11tre5eJUAKrj2eOEskHs0aXusWhQlyM/9Bbt6X83YqbHZooNJ5m7zyARHp1nNo4go9Vesee9mIDTFBpqrHV3UvaxEl+DgRaKWIucMzevE9IF8tJKlKaolnJhKOxDd2vDepmMhLio1Ner3St8QJ+DghAhjZqlrQK/wjQ2eHEo0wFQX28UljaXWNFBV54+6kpCxQFg793k9Nb05er8Cj5oV/dQqLEbDOIXcGa3QDQ+Wl0XUlABEBAAGJAR8EGAECAAkFAkxH+WACGwwACgkQs87T6qyXToLchgf/XSSfyTxrZRnbxdb1g+KrU6D3xaMTQlD+Axj245vdzUaMkjsYnkHV/btUl8b/GE0MkErnAGuZAbMeXg1ci02PGTyX3W2HCVa06nU7AdOiCIjNktEg3BtjMT0t3DKnS/Q94Gy0EYF5yHURBzSG95+Vop2R+4eBzct/UsUg3CK885so59wERYtCQ8KarOqO/QQVRlLZPJ2K6SBinthTLTbG8Sou64OsJbeiSajLBW++/bETCXat9zRFbvvzh2RNBFZWWtGkWS9yf3wA0rC8kyztFAV344ZGLJAzPtRoEh66o524aMNJxJiCBg7ZCMzbviZHremDiajvPYZX9V06tzOjKbACAAM=", 
+      "encoding": "base64", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/apt/trusted.gpg.d/local.gpg": {
+      "content": "mQENBE57xJcBCACoTQVVwZiI326n0d/3KwhqhHDf3Ad6WNeB1yeLid4wp4AHQRS4gZQspryY+OWLHrqSDtRLoAUv/hQWgRqs4USiUcYhtgH+JNou0kprMi7LQpieby0WAHkOD4rx5y8iVAyPbf24O4qwI3ti7DTqhY1SGt7kPZ9TSUTsQIOmIpvOJkdYFpcvYVN91K3ktLqh8qJxv42amzvJYymN+WXRm4pomOYpw7g6sztbkfI+RJVXRzRzMIDeKccYModOUQ9P7zOfV6VlXdnULpjgfGIuAyYHFWRU8I5QHRcanbMp4/OCG5xfLXcYeX5G35ZzkqHzQd4/teQvispWPxKi3xUPqnBdABEBAAG0IFJpY2hhcmQgQ3Jvd2xleSA8ckByY3Jvd2xleS5vcmc+iQE4BBMBAgAiBQJOe8SXAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRCPJ22UHyK4EaxbB/42MO64IyhJUspXwMT96L4+rzM6fHrAYuQRyNcmQBil/Rx/1JGmfAp+6p5f+N+nXU8+mUL+sdrXzbZGhcRXZhvTyxZ6XhX+EM+UJtzGWOrQIWc570n4W0geb5FBtt5BT9HBMmm6z3MtN2VvrmHRRAwTa5CcPHarXC5lBoRIBy4/DkQ/BmGkwPMQY+rXDynFH4C+RWoaR785GBhNmWxhuLW5VthJSqBpSk9b151dvo1vtPqJUkZ7AhPN1jl8f+haP7Lg22sq0jCDhDZ8chX6cibW5V6dgNqJf+VymMySrOPX2x6di3pZ+DR/Srnwro/NhCGvrQdUDntT54EIMvdcB1lSsAIAA7kBDQROe8SXAQgAz4AwwOy4mWSbNXM2wD4OKI4vp7Nm7xv7GqNks9vCf4T3CQxaWUyoj7afMKB/DeiGZ2NNidWr2MN4wIzGBiHK+dsjuBCYpFPYeSafZj61Y3GbSgAmtIvWccbEuxXZqOaz/4TNCBD5z0BHsk8AqtqnGI789oeEkrGhfu0CRDR4IhrabDykUW+N/HPKptd1q0m0k2+a6Jmp1v+NPGVuDoBiZQVMN+4dza6GWcrMg3FOJM5E8ze43f/ifLHV54zuOCTddW7/4TipGEWBrMfPtc30ISZWOasSZGaX/OJZYw0HmMQmHpC09ju6n/y6maT1EX8s3f/hMfeGpzZ7gKjSVfqxGwARAQABiQEfBBgBAgAJBQJOe8SXAhsMAAoJEI8nbZQfIrgRM8QH/0RF3fPxrAFyaGSbv4x5xHdbU1ZQfjvxbQ/tLgaCn7yz8PKo/Hv5Rri3tVjIbi1Ri+Scg0O63en2qOop7WaqAs7kbWpdjfkoj09P2Uu4t6e07lIpkzMcodOSaYABv6+avwZBXw6O0b8LouJVYGhwgty2PrriREnVrUhbh9eF/6u4j2IznxF0mi0Bi4fyzQBydcUdrrUygkveEWWwqu+fM+F3yNh0Drm+uccb4hQVYxbegOII+9Q4rTWvBVNdvB1W1NabN2C1a9Veg6Kw8dhqBVkruv2fFw/SJcer/MaFVo0ybd/SLSRKeA/yBGOA8BzVDPYojutZo+Baab6tXBLdRnKwAgAD", 
+      "encoding": "base64", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/blueprint-io-server.cfg": {
+      "content": "[default]\naccess_key = AKIAJLHVAVYIFYY3K2BQ\nbucket = blueprint-io\nbucket_location = us-west-1\nlibrato_token = 1ba2ce761dc3f31126d09ba83920a06f471e7debeee67c91a9cce9553dfb74f0\nlibrato_username = ops@devstructure.com\nsecret_key = cq167c8DH6Q19Li+a2+IsTbvtCC0IGillHs3WROu\nstatsd = ip-10-162-18-6.us-west-1.compute.internal:8125\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/blueprint-io-server.py": {
+      "content": "\"\"\"\nPagerUnit tests for the local Blueprint I/O Server.\n\nThese are cribbed from a subset of the Nose tests available with the\nsource.  The point is to exercise both Blueprint I/O Server and Blueprint\nto verify the application is working properly at a low cost.\n\"\"\"\n\nSECRET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-'\nNAME = 'test'\nSHA = 'adff242fbc01ba3753abf8c3f9b45eeedec23ec6'\n\nimport httplib\n\ndef _get(path):\n    conn = httplib.HTTPSConnection('127.0.0.1', 443)\n    conn.request('GET', path)\n    return conn.getresponse()\n\ndef test_GET_secret():\n    response = _get('/secret')\n    assert 201 == response.status\n    assert 64 + 1 == int(response.getheader('Content-Length')),         repr(response.getheader('Content-Length'))\n\ndef test_GET_blueprint():\n    response = _get('/{0}/{1}'.format(SECRET, NAME))\n    assert 301 == response.status, repr(response.status)\n\ndef test_GET_blueprint_sh():\n    response = _get('/{0}/{1}/{1}.sh'.format(SECRET, NAME))\n    assert 200 == response.status\n    shebang = response.read(2)\n    assert '#!' == shebang, repr(shebang)\n\ndef test_GET_blueprint_userdata():\n    response = _get('/{0}/{1}/user-data.sh'.format(SECRET, NAME))\n    assert 200 == response.status\n    shebang = response.read(2)\n    assert '#!' == shebang, repr(shebang)\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/blueprint-template.d/lsb.sh": {
+      "content": "# LSB properties for use in Blueprint file templates.\n\n# The operating system release codename.  This is possibly only relevant on\n# Debian-based systems.\nRELEASE=\"$(lsb_release -sc)\"\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/blueprint-template.d/proc.sh": {
+      "content": "# System properties from `/proc` for use in Blueprint file templates.\n\n# The number of cores in the system.  The semantics of this value when read\n# in a virtualized environment are undefined.\nCORES=\"$(grep \"^processor\" \"/proc/cpuinfo\" | wc -l)\"\n\n# The total amount of memory in the system in bytes.\nMEM=\"$(grep \"^MemTotal\" \"/proc/meminfo\" | awk '{print $2 * 1024}')\"\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/blueprintignore": {
+      "content": ":source:/usr/local/lib/python2.7/dist-packages/init_cov_core.pth\n:source:/usr/local/share/man/man1/nosetests.1\n\n/etc/apt\n!/etc/apt/sources.list.d\n!/etc/apt/trusted.gpg.d\n*.pyc\n/etc/hosts\n/etc/nginx/sites-enabled/default\n/etc/sudoers\n\n:package:apt/blueprint\n!:package:apt/blueprint\n:package:apt/blueprint-io-server\n!:package:apt/blueprint-io-server\n:package:apt/build-essential\n!:package:apt/build-essential\n:package:apt/curl\n:package:apt/ganglia-monitor\n!:package:apt/ganglia-monitor\n:package:apt/libopts25\n:package:apt/libtspi1\n:package:apt/python-dev\n!:package:apt/python-dev\n!:package:apt/python-setuptools\n:package:apt/ruby\n!:package:apt/ruby\n:package:apt/ruby-dev\n!:package:apt/ruby-dev\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/cron.d/pagerunit": {
+      "content": "0 * * * * root pagerunit /etc/blueprint-io-server.py\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/foobar": {
+      "content": "FOO: foo\nBAR: bar\n\nCORES: 1\nMEM: 519929856\n\nRELEASE: natty\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/foobar.blueprint-template.mustache": {
+      "content": "FOO: {{FOO}}\nBAR: {{BAR}}\n\nCORES: {{CORES}}\nMEM: {{MEM}}\n\nRELEASE: {{RELEASE}}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/foobar.blueprint-template.sh": {
+      "content": "FOO=\"foo\"\nBAR=\"bar\"\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/freight.conf": {
+      "content": "ORIGIN=\"DevStructure\"\nLABEL=\"DevStructure\"\n\nGPG=\"packages@devstructure.com\"\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/init.d/nginx": {
+      "content": "#!/bin/sh\n\n# HOOAH\n\n### BEGIN INIT INFO\n# Provides:          nginx\n# Required-Start:    $local_fs $remote_fs $network $syslog\n# Required-Stop:     $local_fs $remote_fs $network $syslog\n# Default-Start:     2 3 4 5\n# Default-Stop:      0 1 6\n# Short-Description: starts the nginx web server\n# Description:       starts nginx using start-stop-daemon\n### END INIT INFO\n\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\nDAEMON=/usr/sbin/nginx\nNAME=nginx\nDESC=nginx\n\n# Include nginx defaults if available\nif [ -f /etc/default/nginx ]; then\n\t. /etc/default/nginx\nfi\n\ntest -x $DAEMON || exit 0\n\nset -e\n\n. /lib/lsb/init-functions\n\ntest_nginx_config() {\n\tif $DAEMON -t $DAEMON_OPTS >/dev/null 2>&1; then\n\t\treturn 0\n\telse\n\t\t$DAEMON -t $DAEMON_OPTS\n\t\treturn $?\n\tfi\n}\n\ncase \"$1\" in\n\tstart)\n\t\techo -n \"Starting $DESC: \"\n\t\ttest_nginx_config\n\t\t# Check if the ULIMIT is set in /etc/default/nginx\n\t\tif [ -n \"$ULIMIT\" ]; then\n\t\t\t# Set the ulimits\n\t\t\tulimit $ULIMIT\n\t\tfi\n\t\tstart-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \\\n\t\t    --exec $DAEMON -- $DAEMON_OPTS || true\n\t\techo \"$NAME.\"\n\t\t;;\n\n\tstop)\n\t\techo -n \"Stopping $DESC: \"\n\t\tstart-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \\\n\t\t    --exec $DAEMON || true\n\t\techo \"$NAME.\"\n\t\t;;\n\n\trestart|force-reload)\n\t\techo -n \"Restarting $DESC: \"\n\t\tstart-stop-daemon --stop --quiet --pidfile \\\n\t\t    /var/run/$NAME.pid --exec $DAEMON || true\n\t\tsleep 1\n\t\ttest_nginx_config\n\t\tstart-stop-daemon --start --quiet --pidfile \\\n\t\t    /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS || true\n\t\techo \"$NAME.\"\n\t\t;;\n\n\treload)\n\t\techo -n \"Reloading $DESC configuration: \"\n\t\ttest_nginx_config\n\t\tstart-stop-daemon --stop --signal HUP --quiet --pidfile /var/run/$NAME.pid \\\n\t\t    --exec $DAEMON || true\n\t\techo \"$NAME.\"\n\t\t;;\n\n\tconfigtest|testconfig)\n\t\techo -n \"Testing $DESC configuration: \"\n\t\tif test_nginx_config; then\n\t\t\techo \"$NAME.\"\n\t\telse\n\t\t\texit $?\n\t\tfi\n\t\t;;\n\n\tstatus)\n\t\tstatus_of_proc -p /var/run/$NAME.pid \"$DAEMON\" nginx && exit 0 || exit $?\n\t\t;;\n\t*)\n\t\techo \"Usage: $NAME {start|stop|restart|reload|force-reload|status|configtest}\" >&2\n\t\texit 1\n\t\t;;\nesac\n\nexit 0\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100755", 
+      "owner": "root"
+    }, 
+    "/etc/logrotate.d/blueprint-io-server": {
+      "content": "/var/log/blueprint-io-server/*.log {\n\tdaily\n\tmissingok\n\trotate 52\n\tcompress\n\tdelaycompress\n\tnotifempty\n\tcreate 0644 root root\n\tsharedscripts\n\tpostrotate\n\t\tsudo restart blueprint-io-server\n\tendscript\n}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/network/if-up.d/lxcme": {
+      "content": "#!/bin/sh\nroute add default gw \"10.0.2.2\" eth0\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100755", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/conf.d/log.conf": {
+      "content": "# Custom log format that contains the Host header.\nlog_format devstructure '$remote_addr - $remote_user [$time_local] \"$host\" \"$request\" $content_length $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\"';\n\n# Turn off the main access log.\naccess_log off;\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/devstructure.crt": {
+      "content": "-----BEGIN CERTIFICATE-----\nMIIDkjCCAvugAwIBAgIDE3vnMA0GCSqGSIb3DQEBBQUAME4xCzAJBgNVBAYTAlVT\nMRAwDgYDVQQKEwdFcXVpZmF4MS0wKwYDVQQLEyRFcXVpZmF4IFNlY3VyZSBDZXJ0\naWZpY2F0ZSBBdXRob3JpdHkwHhcNMTAwNjIwMDgxMzMxWhcNMTIwNjIyMDMwMTU3\nWjCB6zEpMCcGA1UEBRMgZmVaMzNsLUdVYW1tZHBNeWowMXRxdWR0NlVndXBwS0ox\nCzAJBgNVBAYTAlVTMRswGQYDVQQKDBIqLmRldnN0cnVjdHVyZS5jb20xEzARBgNV\nBAsTCkdUMDA4NDU1ODMxMTAvBgNVBAsTKFNlZSB3d3cucmFwaWRzc2wuY29tL3Jl\nc291cmNlcy9jcHMgKGMpMTAxLzAtBgNVBAsTJkRvbWFpbiBDb250cm9sIFZhbGlk\nYXRlZCAtIFJhcGlkU1NMKFIpMRswGQYDVQQDDBIqLmRldnN0cnVjdHVyZS5jb20w\ngZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAL/eVU8RBMSkS6JKPNBAMN5DuFR9\nA2cneTqbgTf9nJ//EAFx9iGN574DSB3fce/0UDKCeBrKKraYXVZwNwsUkxN5HPr0\nXSDd0jxtMF0xJVqLpEdI0kcdiLBjw1myaVC8/MoRZmtnQzKMrwO6JWcPJEBwu9ac\nKfbLBSnJGUrgpZblAgMBAAGjgd8wgdwwHwYDVR0jBBgwFoAUSOZo+SvSspXXR9gj\nIBBPM5iQn9QwDgYDVR0PAQH/BAQDAgTwMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggr\nBgEFBQcDAjAvBgNVHREEKDAmghIqLmRldnN0cnVjdHVyZS5jb22CEGRldnN0cnVj\ndHVyZS5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC5nZW90cnVzdC5j\nb20vY3Jscy9zZWN1cmVjYS5jcmwwHQYDVR0OBBYEFECn6RA47Au1sgTkbbtWSS6M\nuBHXMA0GCSqGSIb3DQEBBQUAA4GBABfcUb7LgBsdF4D+sTMqeqdFmGNXAz/JHMuk\nBG4cQ3RvQk1Q6Ekm8p+2DhKhCe6blhiucE9S6OUcBn3U/cIQyqF5OmsZUmq6Acly\nVMncpjjwDrec9dt4ucEzQTN0vGO9uC63aXNH3l7laSJUgxoJHfBOj+xk+IMjOC6w\nooNQF9rQ\n-----END CERTIFICATE-----\n", 
+      "encoding": "plain", 
+      "group": "www-data", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/devstructure.key": {
+      "content": "-----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQC/3lVPEQTEpEuiSjzQQDDeQ7hUfQNnJ3k6m4E3/Zyf/xABcfYh\njee+A0gd33Hv9FAygngayiq2mF1WcDcLFJMTeRz69F0g3dI8bTBdMSVai6RHSNJH\nHYiwY8NZsmlQvPzKEWZrZ0MyjK8DuiVnDyRAcLvWnCn2ywUpyRlK4KWW5QIDAQAB\nAoGAMafXyjOsWTvv+xtda8QBIbTDAtKry8mSfVF7esMfAuVe/hDBU2PHYwy0YE7Q\nzPocu0W60awaq9D47wLxq+NyQHc3tqEaO7hJ8EvcrKHd6IXCanGVwi+AtvJmC2MT\ntETi0IV1jprLA9G7I+UqsADz29AdbhBz0bI6qQua7/1/uQ0CQQD8nGKcQjSzPcy0\n0mfo7Ff1WgRK8H3tBKRP4Evg4e3xGr/1SUNm4RQt/m+XTPygbVVt9QoPca2GwAYf\nRjGR6CGLAkEAwnFSpTg8l2ikN9yhR2ZE/PjE4s0gXYamzIZ1envJ92GK9V4pq+0T\nJOmjNbfunHrdXeRdSFVNFaf3kkdx/XdXTwJBANUJdkhdtWAskEU25RcUqyFp5xDk\nPO706TXL7XIcV7TsYFMWlFdhHsmjOK0a6jrJujBfZTqdHkD0FLWvVwK8B/0CQBhI\nwPKjkGW0ivXzFy1sp2cUxrowtj8YBxL6JAf1F+dOhmVYqkmvpTlx+JFH9IQUkDse\nv0u+Y4812CSryZ/HXN8CQQCyru+rBTya9FWOymK64y+F0hwEk5SA5vTWtfKkGS6A\nVz7MDkMy494zVuzQ4UezTTUjmCdfIiXi1aSuY77ELy7C\n-----END RSA PRIVATE KEY-----\n", 
+      "encoding": "plain", 
+      "group": "www-data", 
+      "mode": "100640", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-available/docs": {
+      "content": "server {\n\n\tlisten 80;\n\tserver_name docs.devstructure.com;\n\n\taccess_log /var/log/nginx/access.log devstructure;\n\n\trewrite ^/start http://devstructure.com/tutorial.html permanent;\n\trewrite ^/blueprints http://devstructure.github.com/blueprint/ permanent;\n\trewrite ^/sandboxes http://devstructure.github.com/sandbox/ permanent;\n\trewrite . http://devstructure.com/;\n\n}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-available/io": {
+      "content": "server {\n\n\tlisten 80;\n\tlisten 443 default ssl;\n\tserver_name devstructure.com www.devstructure.com;\n\n\tssl on;\n\tssl_certificate /etc/nginx/devstructure.crt;\n\tssl_certificate_key /etc/nginx/devstructure.key;\n\n\tkeepalive_timeout 300;\n\n\taccess_log /var/log/nginx/access.log devstructure;\n\n\t# Marketing site.\n\troot /var/www;\n\tlocation /start {\n\t\trewrite /start /tutorial.html permanent;\n\t}\n\n\t# Blueprint I/O Server.\n\tclient_max_body_size 64m;\n\tlocation = /secret {\n\t\tproxy_pass http://127.0.0.1:5000;\n\t\tproxy_set_header Host $http_host;\n\t\tproxy_set_header X-Forwarded-For $remote_addr;\n\t}\n\tlocation ~ \"^/[0-9A-Za-z_-]{64}/\" {\n\t\tproxy_pass http://127.0.0.1:5000;\n\t\tproxy_set_header Host $http_host;\n\t\tproxy_set_header X-Forwarded-For $remote_addr;\n\t}\n\n}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-available/packages": {
+      "content": "server {\n\n\tlisten 80;\n\tserver_name packages.devstructure.com;\n\n\taccess_log /var/log/nginx/access.log devstructure;\n\n\troot /var/cache/freight;\n\tautoindex on;\n\n\tlocation /debian { alias /var/cache/freight; }\n\tlocation /ubuntu { alias /var/cache/freight; }\n\n}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-available/static": {
+      "content": "server {\n\n\tlisten 80;\n\tserver_name static.devstructure.com;\n\n\taccess_log /var/log/nginx/access.log devstructure;\n\n\troot /var/www/static;\n\tautoindex on;\n\tlocation /devstructure32.box {\n\t\trewrite . http://d386w4pczuxcea.cloudfront.net/devstructure32.box redirect;\n\t}\n\tlocation /devstructure64.box {\n\t\trewrite . http://d386w4pczuxcea.cloudfront.net/devstructure64.box redirect;\n\t}\n\n}\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-enabled/docs": {
+      "content": "/etc/nginx/sites-available/docs", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "120777", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-enabled/io": {
+      "content": "/etc/nginx/sites-available/io", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "120777", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-enabled/packages": {
+      "content": "/etc/nginx/sites-available/packages", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "120777", 
+      "owner": "root"
+    }, 
+    "/etc/nginx/sites-enabled/static": {
+      "content": "/etc/nginx/sites-available/static", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "120777", 
+      "owner": "root"
+    }, 
+    "/etc/pagerunit.cfg": {
+      "content": "[mail]\n#address = richard@devstructure.com\n\n[sms]\n#address = 3145377085@txt.att.net\n\n[smtp]\npassword = g0ph#R\nusername = nagios@devstructure.com\n", 
+      "encoding": "plain", 
+      "group": "root", 
+      "mode": "100644", 
+      "owner": "root"
+    }
+  }, 
+  "packages": {
+    "apt": {
+      "blueprint-io-server": [
+        "0.0.14-1py2.7"
+      ], 
+      "build-essential": [
+        "11.5ubuntu1"
+      ], 
+      "freight": [
+        "0.0.10-1"
+      ], 
+      "ganglia-monitor": [
+        "3.1.7-1ubuntu1"
+      ], 
+      "lynx": [
+        "2.8.8dev.7-1"
+      ], 
+      "lynx-cur": [
+        "2.8.8dev.7-1"
+      ], 
+      "nginx-common": [
+        "0.8.54-4"
+      ], 
+      "nginx-light": [
+        "0.8.54-4"
+      ], 
+      "nodejs": [
+        "0.4.11-1chl1~natty1"
+      ], 
+      "ntp": [
+        "1:4.2.6.p2+dfsg-1ubuntu5"
+      ], 
+      "openssh-server": [
+        "1:5.8p1-1ubuntu3"
+      ], 
+      "pagerunit": [
+        "0.0.3-2py2.7"
+      ], 
+      "python-dev": [
+        "2.7.1-0ubuntu5"
+      ], 
+      "python-setuptools": [
+        "0.6.15-1ubuntu1"
+      ], 
+      "python-support": [
+        "1.0.10ubuntu3"
+      ], 
+      "python2.7": [
+        "2.7.1-5ubuntu2"
+      ], 
+      "rlwrap": [
+        "0.37-2"
+      ], 
+      "rng-tools": [
+        "2-unofficial-mt.13-3ubuntu1"
+      ], 
+      "ruby": [
+        "4.5"
+      ], 
+      "ruby-dev": [
+        "4.5"
+      ], 
+      "rubygems": [
+        "1.3.7-3"
+      ], 
+      "rubygems1.8": [
+        "1.3.7-3"
+      ], 
+      "s3cmd": [
+        "0.9.9.91-1ubuntu1"
+      ], 
+      "strace": [
+        "4.5.20-2ubuntu2"
+      ], 
+      "tmux": [
+        "1.3-2+squeeze1"
+      ]
+    }, 
+    "nodejs": {
+      "npm": [
+        "1.0.27"
+      ], 
+      "redis": [
+        "0.6.7"
+      ], 
+      "socket.io": [
+        "0.7.9"
+      ], 
+      "underscore": [
+        "1.1.7"
+      ]
+    }, 
+    "pip": {
+      "Django": [
+        "1.3"
+      ], 
+      "Flask": [
+        "0.7.2"
+      ], 
+      "Jinja2": [
+        "2.6"
+      ], 
+      "Pygments": [
+        "1.4"
+      ], 
+      "Werkzeug": [
+        "0.7.1"
+      ], 
+      "boto": [
+        "2.0"
+      ], 
+      "cov_core": [
+        "1.3"
+      ], 
+      "coverage": [
+        "3.5"
+      ], 
+      "gunicorn": [
+        "0.12.2"
+      ], 
+      "nose": [
+        "1.1.2"
+      ], 
+      "nose_cov": [
+        "1.4"
+      ]
+    }, 
+    "python2.7": {
+      "pip": [
+        "1.0.2"
+      ]
+    }, 
+    "rubygems1.8": {
+      "bunny": [
+        "0.7.5"
+      ], 
+      "chef": [
+        "0.10.4"
+      ], 
+      "erubis": [
+        "2.7.0"
+      ], 
+      "facter": [
+        "1.6.0"
+      ], 
+      "fpm": [
+        "0.3.7"
+      ], 
+      "highline": [
+        "1.6.2"
+      ], 
+      "hpricot": [
+        "0.8.4"
+      ], 
+      "json": [
+        "1.5.3", 
+        "1.5.2"
+      ], 
+      "mime-types": [
+        "1.16"
+      ], 
+      "mixlib-authentication": [
+        "1.1.4"
+      ], 
+      "mixlib-cli": [
+        "1.2.2"
+      ], 
+      "mixlib-config": [
+        "1.1.2"
+      ], 
+      "mixlib-log": [
+        "1.3.0"
+      ], 
+      "moneta": [
+        "0.6.0"
+      ], 
+      "mustache": [
+        "0.99.4"
+      ], 
+      "net-ssh": [
+        "2.1.4"
+      ], 
+      "net-ssh-gateway": [
+        "1.1.0"
+      ], 
+      "net-ssh-multi": [
+        "1.1"
+      ], 
+      "ohai": [
+        "0.6.4"
+      ], 
+      "polyglot": [
+        "0.3.2"
+      ], 
+      "puppet": [
+        "2.7.3"
+      ], 
+      "rdiscount": [
+        "1.6.8"
+      ], 
+      "rest-client": [
+        "1.6.7"
+      ], 
+      "ronn": [
+        "0.7.3"
+      ], 
+      "systemu": [
+        "2.3.0"
+      ], 
+      "treetop": [
+        "1.4.10"
+      ], 
+      "uuidtools": [
+        "2.1.2"
+      ], 
+      "yajl-ruby": [
+        "0.8.3"
+      ]
+    }
+  }, 
+  "services": {
+    "sysvinit": {
+      "ganglia-monitor": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "packages": {
+          "apt": [
+            "ganglia-monitor"
+          ]
+        }, 
+        "sources": [
+          "/usr/local"
+        ]
+      }, 
+      "nginx": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "files": [
+          "/etc/nginx/conf.d/log.conf", 
+          "/etc/nginx/sites-available/packages", 
+          "/etc/init.d/nginx", 
+          "/etc/nginx/sites-available/static", 
+          "/etc/nginx/sites-enabled/io", 
+          "/etc/nginx/sites-enabled/packages", 
+          "/etc/nginx/devstructure.key", 
+          "/etc/nginx/sites-enabled/static", 
+          "/etc/nginx/devstructure.crt", 
+          "/etc/nginx/sites-enabled/docs", 
+          "/etc/logrotate.d/blueprint-io-server", 
+          "/etc/nginx/sites-available/io", 
+          "/etc/nginx/sites-available/docs"
+        ], 
+        "packages": {
+          "apt": [
+            "nginx-common"
+          ]
+        }, 
+        "sources": [
+          "/usr/local"
+        ]
+      }, 
+      "ntp": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "packages": {
+          "apt": [
+            "ntp"
+          ]
+        }
+      }, 
+      "rng-tools": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "packages": {
+          "apt": [
+            "rng-tools"
+          ]
+        }
+      }, 
+      "ssh": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "files": [
+          "/etc/network/if-up.d/lxcme"
+        ], 
+        "packages": {
+          "apt": [
+            "openssh-server"
+          ]
+        }
+      }
+    }, 
+    "upstart": {
+      "blueprint-io-server": {
+        "enable": true, 
+        "ensureRunning": true, 
+        "files": [
+          "/etc/blueprint-io-server.cfg"
+        ], 
+        "packages": {
+          "apt": [
+            "blueprint-io-server"
+          ]
+        }
+      }
+    }
+  }, 
+  "sources": {
+    "/usr/local": "ceaffab3ebc7a4e7b599e56d0eb0308690298f00.tar"
+  }
+}
