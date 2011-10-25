@@ -1,4 +1,4 @@
-# json.sh, a pure-shell JSON parser
+# `json.sh`, a pure-shell JSON parser.
 
 set -e
 
