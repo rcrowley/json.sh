@@ -338,11 +338,15 @@ _json_char() {
 		# are simple because they only require one character of
 		# history.  Unicode codepoint escapes require more.  The
 		# strategy there is to add states to the machine.
+		#
+		# TODO It'd be nice to decode all escape sequences, including
+		# Unicode codepoints but that would definitely ruin the
+		# line-oriented thing we've got goin' on.
 		"string")
 			case "$_J_PREV_C$_J_C" in
 				"\\\""|"\\/"|"\\\\") _J_V="$_J_V$_J_C";;
-				"\\b"|"\\f"|"\\n"|"\\r") ;; # TODO
-				"\\u") ;; # TODO
+				"\\b"|"\\f"|"\\n"|"\\r")  _J_V="$_J_V\\\\$_J_C";;
+				"\\u") _J_V="$_J_V\\\\$_J_C";;
 				*"\"")
 					_J_STATE="$_J_STATE_DEFAULT"
 					echo "$_J_PATHNAME string $_J_V" >&$_J_FD;;

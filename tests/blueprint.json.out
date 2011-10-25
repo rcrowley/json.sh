@@ -1,9 +1,9 @@
-/files//etc/apt/sources.list.d/devstructure.list/content string deb http://packages.devstructure.com natty main
+/files//etc/apt/sources.list.d/devstructure.list/content string deb http://packages.devstructure.com natty main\n
 /files//etc/apt/sources.list.d/devstructure.list/encoding string plain
 /files//etc/apt/sources.list.d/devstructure.list/group string root
 /files//etc/apt/sources.list.d/devstructure.list/mode string 100644
 /files//etc/apt/sources.list.d/devstructure.list/owner string root
-/files//etc/apt/sources.list.d/local.list/content string #deb file:///home/rcrowley/work/freight/var/cache/freight natty main#deb-src file:///home/rcrowley/work/freight/var/cache/freight natty main
+/files//etc/apt/sources.list.d/local.list/content string #deb file:///home/rcrowley/work/freight/var/cache/freight natty main\n#deb-src file:///home/rcrowley/work/freight/var/cache/freight natty main\n
 /files//etc/apt/sources.list.d/local.list/encoding string plain
 /files//etc/apt/sources.list.d/local.list/group string root
 /files//etc/apt/sources.list.d/local.list/mode string 100644
@@ -18,102 +18,102 @@
 /files//etc/apt/trusted.gpg.d/local.gpg/group string root
 /files//etc/apt/trusted.gpg.d/local.gpg/mode string 100644
 /files//etc/apt/trusted.gpg.d/local.gpg/owner string root
-/files//etc/blueprint-io-server.cfg/content string [default]access_key = AKIAJLHVAVYIFYY3K2BQbucket = blueprint-iobucket_location = us-west-1librato_token = 1ba2ce761dc3f31126d09ba83920a06f471e7debeee67c91a9cce9553dfb74f0librato_username = ops@devstructure.comsecret_key = cq167c8DH6Q19Li+a2+IsTbvtCC0IGillHs3WROustatsd = ip-10-162-18-6.us-west-1.compute.internal:8125
+/files//etc/blueprint-io-server.cfg/content string [default]\naccess_key = AKIAJLHVAVYIFYY3K2BQ\nbucket = blueprint-io\nbucket_location = us-west-1\nlibrato_token = 1ba2ce761dc3f31126d09ba83920a06f471e7debeee67c91a9cce9553dfb74f0\nlibrato_username = ops@devstructure.com\nsecret_key = cq167c8DH6Q19Li+a2+IsTbvtCC0IGillHs3WROu\nstatsd = ip-10-162-18-6.us-west-1.compute.internal:8125\n
 /files//etc/blueprint-io-server.cfg/encoding string plain
 /files//etc/blueprint-io-server.cfg/group string root
 /files//etc/blueprint-io-server.cfg/mode string 100644
 /files//etc/blueprint-io-server.cfg/owner string root
-/files//etc/blueprint-io-server.py/content string """PagerUnit tests for the local Blueprint I/O Server.These are cribbed from a subset of the Nose tests available with thesource.  The point is to exercise both Blueprint I/O Server and Blueprintto verify the application is working properly at a low cost."""SECRET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-'NAME = 'test'SHA = 'adff242fbc01ba3753abf8c3f9b45eeedec23ec6'import httplibdef _get(path):    conn = httplib.HTTPSConnection('127.0.0.1', 443)    conn.request('GET', path)    return conn.getresponse()def test_GET_secret():    response = _get('/secret')    assert 201 == response.status    assert 64 + 1 == int(response.getheader('Content-Length')),         repr(response.getheader('Content-Length'))def test_GET_blueprint():    response = _get('/{0}/{1}'.format(SECRET, NAME))    assert 301 == response.status, repr(response.status)def test_GET_blueprint_sh():    response = _get('/{0}/{1}/{1}.sh'.format(SECRET, NAME))    assert 200 == response.status    shebang = response.read(2)    assert '#!' == shebang, repr(shebang)def test_GET_blueprint_userdata():    response = _get('/{0}/{1}/user-data.sh'.format(SECRET, NAME))    assert 200 == response.status    shebang = response.read(2)    assert '#!' == shebang, repr(shebang)
+/files//etc/blueprint-io-server.py/content string """\nPagerUnit tests for the local Blueprint I/O Server.\n\nThese are cribbed from a subset of the Nose tests available with the\nsource.  The point is to exercise both Blueprint I/O Server and Blueprint\nto verify the application is working properly at a low cost.\n"""\n\nSECRET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-'\nNAME = 'test'\nSHA = 'adff242fbc01ba3753abf8c3f9b45eeedec23ec6'\n\nimport httplib\n\ndef _get(path):\n    conn = httplib.HTTPSConnection('127.0.0.1', 443)\n    conn.request('GET', path)\n    return conn.getresponse()\n\ndef test_GET_secret():\n    response = _get('/secret')\n    assert 201 == response.status\n    assert 64 + 1 == int(response.getheader('Content-Length')),         repr(response.getheader('Content-Length'))\n\ndef test_GET_blueprint():\n    response = _get('/{0}/{1}'.format(SECRET, NAME))\n    assert 301 == response.status, repr(response.status)\n\ndef test_GET_blueprint_sh():\n    response = _get('/{0}/{1}/{1}.sh'.format(SECRET, NAME))\n    assert 200 == response.status\n    shebang = response.read(2)\n    assert '#!' == shebang, repr(shebang)\n\ndef test_GET_blueprint_userdata():\n    response = _get('/{0}/{1}/user-data.sh'.format(SECRET, NAME))\n    assert 200 == response.status\n    shebang = response.read(2)\n    assert '#!' == shebang, repr(shebang)\n
 /files//etc/blueprint-io-server.py/encoding string plain
 /files//etc/blueprint-io-server.py/group string root
 /files//etc/blueprint-io-server.py/mode string 100644
 /files//etc/blueprint-io-server.py/owner string root
-/files//etc/blueprint-template.d/lsb.sh/content string # LSB properties for use in Blueprint file templates.# The operating system release codename.  This is possibly only relevant on# Debian-based systems.RELEASE="$(lsb_release -sc)"
+/files//etc/blueprint-template.d/lsb.sh/content string # LSB properties for use in Blueprint file templates.\n\n# The operating system release codename.  This is possibly only relevant on\n# Debian-based systems.\nRELEASE="$(lsb_release -sc)"\n
 /files//etc/blueprint-template.d/lsb.sh/encoding string plain
 /files//etc/blueprint-template.d/lsb.sh/group string root
 /files//etc/blueprint-template.d/lsb.sh/mode string 100644
 /files//etc/blueprint-template.d/lsb.sh/owner string root
-/files//etc/blueprint-template.d/proc.sh/content string # System properties from `/proc` for use in Blueprint file templates.# The number of cores in the system.  The semantics of this value when read# in a virtualized environment are undefined.CORES="$(grep "^processor" "/proc/cpuinfo" | wc -l)"# The total amount of memory in the system in bytes.MEM="$(grep "^MemTotal" "/proc/meminfo" | awk '{print $2 * 1024}')"
+/files//etc/blueprint-template.d/proc.sh/content string # System properties from `/proc` for use in Blueprint file templates.\n\n# The number of cores in the system.  The semantics of this value when read\n# in a virtualized environment are undefined.\nCORES="$(grep "^processor" "/proc/cpuinfo" | wc -l)"\n\n# The total amount of memory in the system in bytes.\nMEM="$(grep "^MemTotal" "/proc/meminfo" | awk '{print $2 * 1024}')"\n
 /files//etc/blueprint-template.d/proc.sh/encoding string plain
 /files//etc/blueprint-template.d/proc.sh/group string root
 /files//etc/blueprint-template.d/proc.sh/mode string 100644
 /files//etc/blueprint-template.d/proc.sh/owner string root
-/files//etc/blueprintignore/content string :source:/usr/local/lib/python2.7/dist-packages/init_cov_core.pth:source:/usr/local/share/man/man1/nosetests.1/etc/apt!/etc/apt/sources.list.d!/etc/apt/trusted.gpg.d*.pyc/etc/hosts/etc/nginx/sites-enabled/default/etc/sudoers:package:apt/blueprint!:package:apt/blueprint:package:apt/blueprint-io-server!:package:apt/blueprint-io-server:package:apt/build-essential!:package:apt/build-essential:package:apt/curl:package:apt/ganglia-monitor!:package:apt/ganglia-monitor:package:apt/libopts25:package:apt/libtspi1:package:apt/python-dev!:package:apt/python-dev!:package:apt/python-setuptools:package:apt/ruby!:package:apt/ruby:package:apt/ruby-dev!:package:apt/ruby-dev
+/files//etc/blueprintignore/content string :source:/usr/local/lib/python2.7/dist-packages/init_cov_core.pth\n:source:/usr/local/share/man/man1/nosetests.1\n\n/etc/apt\n!/etc/apt/sources.list.d\n!/etc/apt/trusted.gpg.d\n*.pyc\n/etc/hosts\n/etc/nginx/sites-enabled/default\n/etc/sudoers\n\n:package:apt/blueprint\n!:package:apt/blueprint\n:package:apt/blueprint-io-server\n!:package:apt/blueprint-io-server\n:package:apt/build-essential\n!:package:apt/build-essential\n:package:apt/curl\n:package:apt/ganglia-monitor\n!:package:apt/ganglia-monitor\n:package:apt/libopts25\n:package:apt/libtspi1\n:package:apt/python-dev\n!:package:apt/python-dev\n!:package:apt/python-setuptools\n:package:apt/ruby\n!:package:apt/ruby\n:package:apt/ruby-dev\n!:package:apt/ruby-dev\n
 /files//etc/blueprintignore/encoding string plain
 /files//etc/blueprintignore/group string root
 /files//etc/blueprintignore/mode string 100644
 /files//etc/blueprintignore/owner string root
-/files//etc/cron.d/pagerunit/content string 0 * * * * root pagerunit /etc/blueprint-io-server.py
+/files//etc/cron.d/pagerunit/content string 0 * * * * root pagerunit /etc/blueprint-io-server.py\n
 /files//etc/cron.d/pagerunit/encoding string plain
 /files//etc/cron.d/pagerunit/group string root
 /files//etc/cron.d/pagerunit/mode string 100644
 /files//etc/cron.d/pagerunit/owner string root
-/files//etc/foobar/content string FOO: fooBAR: barCORES: 1MEM: 519929856RELEASE: natty
+/files//etc/foobar/content string FOO: foo\nBAR: bar\n\nCORES: 1\nMEM: 519929856\n\nRELEASE: natty\n
 /files//etc/foobar/encoding string plain
 /files//etc/foobar/group string root
 /files//etc/foobar/mode string 100644
 /files//etc/foobar/owner string root
-/files//etc/foobar.blueprint-template.mustache/content string FOO: {{FOO}}BAR: {{BAR}}CORES: {{CORES}}MEM: {{MEM}}RELEASE: {{RELEASE}}
+/files//etc/foobar.blueprint-template.mustache/content string FOO: {{FOO}}\nBAR: {{BAR}}\n\nCORES: {{CORES}}\nMEM: {{MEM}}\n\nRELEASE: {{RELEASE}}\n
 /files//etc/foobar.blueprint-template.mustache/encoding string plain
 /files//etc/foobar.blueprint-template.mustache/group string root
 /files//etc/foobar.blueprint-template.mustache/mode string 100644
 /files//etc/foobar.blueprint-template.mustache/owner string root
-/files//etc/foobar.blueprint-template.sh/content string FOO="foo"BAR="bar"
+/files//etc/foobar.blueprint-template.sh/content string FOO="foo"\nBAR="bar"\n
 /files//etc/foobar.blueprint-template.sh/encoding string plain
 /files//etc/foobar.blueprint-template.sh/group string root
 /files//etc/foobar.blueprint-template.sh/mode string 100644
 /files//etc/foobar.blueprint-template.sh/owner string root
-/files//etc/freight.conf/content string ORIGIN="DevStructure"LABEL="DevStructure"GPG="packages@devstructure.com"
+/files//etc/freight.conf/content string ORIGIN="DevStructure"\nLABEL="DevStructure"\n\nGPG="packages@devstructure.com"\n
 /files//etc/freight.conf/encoding string plain
 /files//etc/freight.conf/group string root
 /files//etc/freight.conf/mode string 100644
 /files//etc/freight.conf/owner string root
-/files//etc/init.d/nginx/content string #!/bin/sh# HOOAH### BEGIN INIT INFO# Provides:          nginx# Required-Start:    $local_fs $remote_fs $network $syslog# Required-Stop:     $local_fs $remote_fs $network $syslog# Default-Start:     2 3 4 5# Default-Stop:      0 1 6# Short-Description: starts the nginx web server# Description:       starts nginx using start-stop-daemon### END INIT INFOPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/binDAEMON=/usr/sbin/nginxNAME=nginxDESC=nginx# Include nginx defaults if availableif [ -f /etc/default/nginx ]; thent. /etc/default/nginxfitest -x $DAEMON || exit 0set -e. /lib/lsb/init-functionstest_nginx_config() {tif $DAEMON -t $DAEMON_OPTS >/dev/null 2>&1; thenttreturn 0telsett$DAEMON -t $DAEMON_OPTSttreturn $?tfi}case "$1" intstart)ttecho -n "Starting $DESC: "tttest_nginx_configtt# Check if the ULIMIT is set in /etc/default/nginxttif [ -n "$ULIMIT" ]; thenttt# Set the ulimitstttulimit $ULIMITttfittstart-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \tt    --exec $DAEMON -- $DAEMON_OPTS || truettecho "$NAME."tt;;tstop)ttecho -n "Stopping $DESC: "ttstart-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \tt    --exec $DAEMON || truettecho "$NAME."tt;;trestart|force-reload)ttecho -n "Restarting $DESC: "ttstart-stop-daemon --stop --quiet --pidfile \tt    /var/run/$NAME.pid --exec $DAEMON || truettsleep 1tttest_nginx_configttstart-stop-daemon --start --quiet --pidfile \tt    /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS || truettecho "$NAME."tt;;treload)ttecho -n "Reloading $DESC configuration: "tttest_nginx_configttstart-stop-daemon --stop --signal HUP --quiet --pidfile /var/run/$NAME.pid \tt    --exec $DAEMON || truettecho "$NAME."tt;;tconfigtest|testconfig)ttecho -n "Testing $DESC configuration: "ttif test_nginx_config; thentttecho "$NAME."ttelsetttexit $?ttfitt;;tstatus)ttstatus_of_proc -p /var/run/$NAME.pid "$DAEMON" nginx && exit 0 || exit $?tt;;t*)ttecho "Usage: $NAME {start|stop|restart|reload|force-reload|status|configtest}" >&2ttexit 1tt;;esacexit 0
+/files//etc/init.d/nginx/content string #!/bin/sh\n\n# HOOAH\n\n### BEGIN INIT INFO\n# Provides:          nginx\n# Required-Start:    $local_fs $remote_fs $network $syslog\n# Required-Stop:     $local_fs $remote_fs $network $syslog\n# Default-Start:     2 3 4 5\n# Default-Stop:      0 1 6\n# Short-Description: starts the nginx web server\n# Description:       starts nginx using start-stop-daemon\n### END INIT INFO\n\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\nDAEMON=/usr/sbin/nginx\nNAME=nginx\nDESC=nginx\n\n# Include nginx defaults if available\nif [ -f /etc/default/nginx ]; then\nt. /etc/default/nginx\nfi\n\ntest -x $DAEMON || exit 0\n\nset -e\n\n. /lib/lsb/init-functions\n\ntest_nginx_config() {\ntif $DAEMON -t $DAEMON_OPTS >/dev/null 2>&1; then\nttreturn 0\ntelse\ntt$DAEMON -t $DAEMON_OPTS\nttreturn $?\ntfi\n}\n\ncase "$1" in\ntstart)\nttecho -n "Starting $DESC: "\ntttest_nginx_config\ntt# Check if the ULIMIT is set in /etc/default/nginx\nttif [ -n "$ULIMIT" ]; then\nttt# Set the ulimits\ntttulimit $ULIMIT\nttfi\nttstart-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \\ntt    --exec $DAEMON -- $DAEMON_OPTS || true\nttecho "$NAME."\ntt;;\n\ntstop)\nttecho -n "Stopping $DESC: "\nttstart-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \\ntt    --exec $DAEMON || true\nttecho "$NAME."\ntt;;\n\ntrestart|force-reload)\nttecho -n "Restarting $DESC: "\nttstart-stop-daemon --stop --quiet --pidfile \\ntt    /var/run/$NAME.pid --exec $DAEMON || true\nttsleep 1\ntttest_nginx_config\nttstart-stop-daemon --start --quiet --pidfile \\ntt    /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS || true\nttecho "$NAME."\ntt;;\n\ntreload)\nttecho -n "Reloading $DESC configuration: "\ntttest_nginx_config\nttstart-stop-daemon --stop --signal HUP --quiet --pidfile /var/run/$NAME.pid \\ntt    --exec $DAEMON || true\nttecho "$NAME."\ntt;;\n\ntconfigtest|testconfig)\nttecho -n "Testing $DESC configuration: "\nttif test_nginx_config; then\ntttecho "$NAME."\nttelse\ntttexit $?\nttfi\ntt;;\n\ntstatus)\nttstatus_of_proc -p /var/run/$NAME.pid "$DAEMON" nginx && exit 0 || exit $?\ntt;;\nt*)\nttecho "Usage: $NAME {start|stop|restart|reload|force-reload|status|configtest}" >&2\nttexit 1\ntt;;\nesac\n\nexit 0\n
 /files//etc/init.d/nginx/encoding string plain
 /files//etc/init.d/nginx/group string root
 /files//etc/init.d/nginx/mode string 100755
 /files//etc/init.d/nginx/owner string root
-/files//etc/logrotate.d/blueprint-io-server/content string /var/log/blueprint-io-server/*.log {tdailytmissingoktrotate 52tcompresstdelaycompresstnotifemptytcreate 0644 root roottsharedscriptstpostrotatettsudo restart blueprint-io-servertendscript}
+/files//etc/logrotate.d/blueprint-io-server/content string /var/log/blueprint-io-server/*.log {\ntdaily\ntmissingok\ntrotate 52\ntcompress\ntdelaycompress\ntnotifempty\ntcreate 0644 root root\ntsharedscripts\ntpostrotate\nttsudo restart blueprint-io-server\ntendscript\n}\n
 /files//etc/logrotate.d/blueprint-io-server/encoding string plain
 /files//etc/logrotate.d/blueprint-io-server/group string root
 /files//etc/logrotate.d/blueprint-io-server/mode string 100644
 /files//etc/logrotate.d/blueprint-io-server/owner string root
-/files//etc/network/if-up.d/lxcme/content string #!/bin/shroute add default gw "10.0.2.2" eth0
+/files//etc/network/if-up.d/lxcme/content string #!/bin/sh\nroute add default gw "10.0.2.2" eth0\n
 /files//etc/network/if-up.d/lxcme/encoding string plain
 /files//etc/network/if-up.d/lxcme/group string root
 /files//etc/network/if-up.d/lxcme/mode string 100755
 /files//etc/network/if-up.d/lxcme/owner string root
-/files//etc/nginx/conf.d/log.conf/content string # Custom log format that contains the Host header.log_format devstructure '$remote_addr - $remote_user [$time_local] "$host" "$request" $content_length $status $body_bytes_sent "$http_referer" "$http_user_agent"';# Turn off the main access log.access_log off;
+/files//etc/nginx/conf.d/log.conf/content string # Custom log format that contains the Host header.\nlog_format devstructure '$remote_addr - $remote_user [$time_local] "$host" "$request" $content_length $status $body_bytes_sent "$http_referer" "$http_user_agent"';\n\n# Turn off the main access log.\naccess_log off;\n
 /files//etc/nginx/conf.d/log.conf/encoding string plain
 /files//etc/nginx/conf.d/log.conf/group string root
 /files//etc/nginx/conf.d/log.conf/mode string 100644
 /files//etc/nginx/conf.d/log.conf/owner string root
-/files//etc/nginx/devstructure.crt/content string -----BEGIN CERTIFICATE-----MIIDkjCCAvugAwIBAgIDE3vnMA0GCSqGSIb3DQEBBQUAME4xCzAJBgNVBAYTAlVTMRAwDgYDVQQKEwdFcXVpZmF4MS0wKwYDVQQLEyRFcXVpZmF4IFNlY3VyZSBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkwHhcNMTAwNjIwMDgxMzMxWhcNMTIwNjIyMDMwMTU3WjCB6zEpMCcGA1UEBRMgZmVaMzNsLUdVYW1tZHBNeWowMXRxdWR0NlVndXBwS0oxCzAJBgNVBAYTAlVTMRswGQYDVQQKDBIqLmRldnN0cnVjdHVyZS5jb20xEzARBgNVBAsTCkdUMDA4NDU1ODMxMTAvBgNVBAsTKFNlZSB3d3cucmFwaWRzc2wuY29tL3Jlc291cmNlcy9jcHMgKGMpMTAxLzAtBgNVBAsTJkRvbWFpbiBDb250cm9sIFZhbGlkYXRlZCAtIFJhcGlkU1NMKFIpMRswGQYDVQQDDBIqLmRldnN0cnVjdHVyZS5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAL/eVU8RBMSkS6JKPNBAMN5DuFR9A2cneTqbgTf9nJ//EAFx9iGN574DSB3fce/0UDKCeBrKKraYXVZwNwsUkxN5HPr0XSDd0jxtMF0xJVqLpEdI0kcdiLBjw1myaVC8/MoRZmtnQzKMrwO6JWcPJEBwu9acKfbLBSnJGUrgpZblAgMBAAGjgd8wgdwwHwYDVR0jBBgwFoAUSOZo+SvSspXXR9gjIBBPM5iQn9QwDgYDVR0PAQH/BAQDAgTwMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAvBgNVHREEKDAmghIqLmRldnN0cnVjdHVyZS5jb22CEGRldnN0cnVjdHVyZS5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC5nZW90cnVzdC5jb20vY3Jscy9zZWN1cmVjYS5jcmwwHQYDVR0OBBYEFECn6RA47Au1sgTkbbtWSS6MuBHXMA0GCSqGSIb3DQEBBQUAA4GBABfcUb7LgBsdF4D+sTMqeqdFmGNXAz/JHMukBG4cQ3RvQk1Q6Ekm8p+2DhKhCe6blhiucE9S6OUcBn3U/cIQyqF5OmsZUmq6AclyVMncpjjwDrec9dt4ucEzQTN0vGO9uC63aXNH3l7laSJUgxoJHfBOj+xk+IMjOC6wooNQF9rQ-----END CERTIFICATE-----
+/files//etc/nginx/devstructure.crt/content string -----BEGIN CERTIFICATE-----\nMIIDkjCCAvugAwIBAgIDE3vnMA0GCSqGSIb3DQEBBQUAME4xCzAJBgNVBAYTAlVT\nMRAwDgYDVQQKEwdFcXVpZmF4MS0wKwYDVQQLEyRFcXVpZmF4IFNlY3VyZSBDZXJ0\naWZpY2F0ZSBBdXRob3JpdHkwHhcNMTAwNjIwMDgxMzMxWhcNMTIwNjIyMDMwMTU3\nWjCB6zEpMCcGA1UEBRMgZmVaMzNsLUdVYW1tZHBNeWowMXRxdWR0NlVndXBwS0ox\nCzAJBgNVBAYTAlVTMRswGQYDVQQKDBIqLmRldnN0cnVjdHVyZS5jb20xEzARBgNV\nBAsTCkdUMDA4NDU1ODMxMTAvBgNVBAsTKFNlZSB3d3cucmFwaWRzc2wuY29tL3Jl\nc291cmNlcy9jcHMgKGMpMTAxLzAtBgNVBAsTJkRvbWFpbiBDb250cm9sIFZhbGlk\nYXRlZCAtIFJhcGlkU1NMKFIpMRswGQYDVQQDDBIqLmRldnN0cnVjdHVyZS5jb20w\ngZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAL/eVU8RBMSkS6JKPNBAMN5DuFR9\nA2cneTqbgTf9nJ//EAFx9iGN574DSB3fce/0UDKCeBrKKraYXVZwNwsUkxN5HPr0\nXSDd0jxtMF0xJVqLpEdI0kcdiLBjw1myaVC8/MoRZmtnQzKMrwO6JWcPJEBwu9ac\nKfbLBSnJGUrgpZblAgMBAAGjgd8wgdwwHwYDVR0jBBgwFoAUSOZo+SvSspXXR9gj\nIBBPM5iQn9QwDgYDVR0PAQH/BAQDAgTwMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggr\nBgEFBQcDAjAvBgNVHREEKDAmghIqLmRldnN0cnVjdHVyZS5jb22CEGRldnN0cnVj\ndHVyZS5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybC5nZW90cnVzdC5j\nb20vY3Jscy9zZWN1cmVjYS5jcmwwHQYDVR0OBBYEFECn6RA47Au1sgTkbbtWSS6M\nuBHXMA0GCSqGSIb3DQEBBQUAA4GBABfcUb7LgBsdF4D+sTMqeqdFmGNXAz/JHMuk\nBG4cQ3RvQk1Q6Ekm8p+2DhKhCe6blhiucE9S6OUcBn3U/cIQyqF5OmsZUmq6Acly\nVMncpjjwDrec9dt4ucEzQTN0vGO9uC63aXNH3l7laSJUgxoJHfBOj+xk+IMjOC6w\nooNQF9rQ\n-----END CERTIFICATE-----\n
 /files//etc/nginx/devstructure.crt/encoding string plain
 /files//etc/nginx/devstructure.crt/group string www-data
 /files//etc/nginx/devstructure.crt/mode string 100644
 /files//etc/nginx/devstructure.crt/owner string root
-/files//etc/nginx/devstructure.key/content string -----BEGIN RSA PRIVATE KEY-----MIICXQIBAAKBgQC/3lVPEQTEpEuiSjzQQDDeQ7hUfQNnJ3k6m4E3/Zyf/xABcfYhjee+A0gd33Hv9FAygngayiq2mF1WcDcLFJMTeRz69F0g3dI8bTBdMSVai6RHSNJHHYiwY8NZsmlQvPzKEWZrZ0MyjK8DuiVnDyRAcLvWnCn2ywUpyRlK4KWW5QIDAQABAoGAMafXyjOsWTvv+xtda8QBIbTDAtKry8mSfVF7esMfAuVe/hDBU2PHYwy0YE7QzPocu0W60awaq9D47wLxq+NyQHc3tqEaO7hJ8EvcrKHd6IXCanGVwi+AtvJmC2MTtETi0IV1jprLA9G7I+UqsADz29AdbhBz0bI6qQua7/1/uQ0CQQD8nGKcQjSzPcy00mfo7Ff1WgRK8H3tBKRP4Evg4e3xGr/1SUNm4RQt/m+XTPygbVVt9QoPca2GwAYfRjGR6CGLAkEAwnFSpTg8l2ikN9yhR2ZE/PjE4s0gXYamzIZ1envJ92GK9V4pq+0TJOmjNbfunHrdXeRdSFVNFaf3kkdx/XdXTwJBANUJdkhdtWAskEU25RcUqyFp5xDkPO706TXL7XIcV7TsYFMWlFdhHsmjOK0a6jrJujBfZTqdHkD0FLWvVwK8B/0CQBhIwPKjkGW0ivXzFy1sp2cUxrowtj8YBxL6JAf1F+dOhmVYqkmvpTlx+JFH9IQUkDsev0u+Y4812CSryZ/HXN8CQQCyru+rBTya9FWOymK64y+F0hwEk5SA5vTWtfKkGS6AVz7MDkMy494zVuzQ4UezTTUjmCdfIiXi1aSuY77ELy7C-----END RSA PRIVATE KEY-----
+/files//etc/nginx/devstructure.key/content string -----BEGIN RSA PRIVATE KEY-----\nMIICXQIBAAKBgQC/3lVPEQTEpEuiSjzQQDDeQ7hUfQNnJ3k6m4E3/Zyf/xABcfYh\njee+A0gd33Hv9FAygngayiq2mF1WcDcLFJMTeRz69F0g3dI8bTBdMSVai6RHSNJH\nHYiwY8NZsmlQvPzKEWZrZ0MyjK8DuiVnDyRAcLvWnCn2ywUpyRlK4KWW5QIDAQAB\nAoGAMafXyjOsWTvv+xtda8QBIbTDAtKry8mSfVF7esMfAuVe/hDBU2PHYwy0YE7Q\nzPocu0W60awaq9D47wLxq+NyQHc3tqEaO7hJ8EvcrKHd6IXCanGVwi+AtvJmC2MT\ntETi0IV1jprLA9G7I+UqsADz29AdbhBz0bI6qQua7/1/uQ0CQQD8nGKcQjSzPcy0\n0mfo7Ff1WgRK8H3tBKRP4Evg4e3xGr/1SUNm4RQt/m+XTPygbVVt9QoPca2GwAYf\nRjGR6CGLAkEAwnFSpTg8l2ikN9yhR2ZE/PjE4s0gXYamzIZ1envJ92GK9V4pq+0T\nJOmjNbfunHrdXeRdSFVNFaf3kkdx/XdXTwJBANUJdkhdtWAskEU25RcUqyFp5xDk\nPO706TXL7XIcV7TsYFMWlFdhHsmjOK0a6jrJujBfZTqdHkD0FLWvVwK8B/0CQBhI\nwPKjkGW0ivXzFy1sp2cUxrowtj8YBxL6JAf1F+dOhmVYqkmvpTlx+JFH9IQUkDse\nv0u+Y4812CSryZ/HXN8CQQCyru+rBTya9FWOymK64y+F0hwEk5SA5vTWtfKkGS6A\nVz7MDkMy494zVuzQ4UezTTUjmCdfIiXi1aSuY77ELy7C\n-----END RSA PRIVATE KEY-----\n
 /files//etc/nginx/devstructure.key/encoding string plain
 /files//etc/nginx/devstructure.key/group string www-data
 /files//etc/nginx/devstructure.key/mode string 100640
 /files//etc/nginx/devstructure.key/owner string root
-/files//etc/nginx/sites-available/docs/content string server {tlisten 80;tserver_name docs.devstructure.com;taccess_log /var/log/nginx/access.log devstructure;trewrite ^/start http://devstructure.com/tutorial.html permanent;trewrite ^/blueprints http://devstructure.github.com/blueprint/ permanent;trewrite ^/sandboxes http://devstructure.github.com/sandbox/ permanent;trewrite . http://devstructure.com/;}
+/files//etc/nginx/sites-available/docs/content string server {\n\ntlisten 80;\ntserver_name docs.devstructure.com;\n\ntaccess_log /var/log/nginx/access.log devstructure;\n\ntrewrite ^/start http://devstructure.com/tutorial.html permanent;\ntrewrite ^/blueprints http://devstructure.github.com/blueprint/ permanent;\ntrewrite ^/sandboxes http://devstructure.github.com/sandbox/ permanent;\ntrewrite . http://devstructure.com/;\n\n}\n
 /files//etc/nginx/sites-available/docs/encoding string plain
 /files//etc/nginx/sites-available/docs/group string root
 /files//etc/nginx/sites-available/docs/mode string 100644
 /files//etc/nginx/sites-available/docs/owner string root
-/files//etc/nginx/sites-available/io/content string server {tlisten 80;tlisten 443 default ssl;tserver_name devstructure.com www.devstructure.com;tssl on;tssl_certificate /etc/nginx/devstructure.crt;tssl_certificate_key /etc/nginx/devstructure.key;tkeepalive_timeout 300;taccess_log /var/log/nginx/access.log devstructure;t# Marketing site.troot /var/www;tlocation /start {ttrewrite /start /tutorial.html permanent;t}t# Blueprint I/O Server.tclient_max_body_size 64m;tlocation = /secret {ttproxy_pass http://127.0.0.1:5000;ttproxy_set_header Host $http_host;ttproxy_set_header X-Forwarded-For $remote_addr;t}tlocation ~ "^/[0-9A-Za-z_-]{64}/" {ttproxy_pass http://127.0.0.1:5000;ttproxy_set_header Host $http_host;ttproxy_set_header X-Forwarded-For $remote_addr;t}}
+/files//etc/nginx/sites-available/io/content string server {\n\ntlisten 80;\ntlisten 443 default ssl;\ntserver_name devstructure.com www.devstructure.com;\n\ntssl on;\ntssl_certificate /etc/nginx/devstructure.crt;\ntssl_certificate_key /etc/nginx/devstructure.key;\n\ntkeepalive_timeout 300;\n\ntaccess_log /var/log/nginx/access.log devstructure;\n\nt# Marketing site.\ntroot /var/www;\ntlocation /start {\nttrewrite /start /tutorial.html permanent;\nt}\n\nt# Blueprint I/O Server.\ntclient_max_body_size 64m;\ntlocation = /secret {\nttproxy_pass http://127.0.0.1:5000;\nttproxy_set_header Host $http_host;\nttproxy_set_header X-Forwarded-For $remote_addr;\nt}\ntlocation ~ "^/[0-9A-Za-z_-]{64}/" {\nttproxy_pass http://127.0.0.1:5000;\nttproxy_set_header Host $http_host;\nttproxy_set_header X-Forwarded-For $remote_addr;\nt}\n\n}\n
 /files//etc/nginx/sites-available/io/encoding string plain
 /files//etc/nginx/sites-available/io/group string root
 /files//etc/nginx/sites-available/io/mode string 100644
 /files//etc/nginx/sites-available/io/owner string root
-/files//etc/nginx/sites-available/packages/content string server {tlisten 80;tserver_name packages.devstructure.com;taccess_log /var/log/nginx/access.log devstructure;troot /var/cache/freight;tautoindex on;tlocation /debian { alias /var/cache/freight; }tlocation /ubuntu { alias /var/cache/freight; }}
+/files//etc/nginx/sites-available/packages/content string server {\n\ntlisten 80;\ntserver_name packages.devstructure.com;\n\ntaccess_log /var/log/nginx/access.log devstructure;\n\ntroot /var/cache/freight;\ntautoindex on;\n\ntlocation /debian { alias /var/cache/freight; }\ntlocation /ubuntu { alias /var/cache/freight; }\n\n}\n
 /files//etc/nginx/sites-available/packages/encoding string plain
 /files//etc/nginx/sites-available/packages/group string root
 /files//etc/nginx/sites-available/packages/mode string 100644
 /files//etc/nginx/sites-available/packages/owner string root
-/files//etc/nginx/sites-available/static/content string server {tlisten 80;tserver_name static.devstructure.com;taccess_log /var/log/nginx/access.log devstructure;troot /var/www/static;tautoindex on;tlocation /devstructure32.box {ttrewrite . http://d386w4pczuxcea.cloudfront.net/devstructure32.box redirect;t}tlocation /devstructure64.box {ttrewrite . http://d386w4pczuxcea.cloudfront.net/devstructure64.box redirect;t}}
+/files//etc/nginx/sites-available/static/content string server {\n\ntlisten 80;\ntserver_name static.devstructure.com;\n\ntaccess_log /var/log/nginx/access.log devstructure;\n\ntroot /var/www/static;\ntautoindex on;\ntlocation /devstructure32.box {\nttrewrite . http://d386w4pczuxcea.cloudfront.net/devstructure32.box redirect;\nt}\ntlocation /devstructure64.box {\nttrewrite . http://d386w4pczuxcea.cloudfront.net/devstructure64.box redirect;\nt}\n\n}\n
 /files//etc/nginx/sites-available/static/encoding string plain
 /files//etc/nginx/sites-available/static/group string root
 /files//etc/nginx/sites-available/static/mode string 100644
@@ -138,7 +138,7 @@
 /files//etc/nginx/sites-enabled/static/group string root
 /files//etc/nginx/sites-enabled/static/mode string 120777
 /files//etc/nginx/sites-enabled/static/owner string root
-/files//etc/pagerunit.cfg/content string [mail]#address = richard@devstructure.com[sms]#address = 3145377085@txt.att.net[smtp]password = g0ph#Rusername = nagios@devstructure.com
+/files//etc/pagerunit.cfg/content string [mail]\n#address = richard@devstructure.com\n\n[sms]\n#address = 3145377085@txt.att.net\n\n[smtp]\npassword = g0ph#R\nusername = nagios@devstructure.com\n
 /files//etc/pagerunit.cfg/encoding string plain
 /files//etc/pagerunit.cfg/group string root
 /files//etc/pagerunit.cfg/mode string 100644
