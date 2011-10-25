@@ -24,7 +24,7 @@ TODO
 ----
 
 * Support for backspace, form feed, newline, and carriage return escapes.
-* Support for Unicode characters specified by their codepoints; `\uXXXX`.
+* Support for Unicode characters specified by their codepoints: `\uXXXX`.
 
 TODONE
 ------
