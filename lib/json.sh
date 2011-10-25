@@ -11,12 +11,17 @@ set -e
 # output because their condition is not met.
 exec 4>/dev/null
 
+# Consume standard input one character at a time to parse JSON.
 json() {
 
 	# Initialize the file descriptor to be used to emit characters.  At
 	# times this value will be 4 to send output to `/dev/null`.
 	_J_FD=1
 
+	# Initialize storage for the "pathname", the concatenation of all
+	# the keys in the tree at any point in time, the current state of
+	# the machine, and the state to which the machine returns after
+	# completing a key or value.
 	_J_PATHNAME="/" _J_STATE="whitespace" _J_STATE_DEFAULT="whitespace"
 
 	# IFS must only contain '\n' so as to be able to read space and tab
@@ -42,17 +47,43 @@ json() {
 
 }
 
+# Process the one-character-per-line stream from `sed` via a state machine.
+# This function will be called recursively in subshell environments to
+# isolate values from their containing scope.
+#
+# The `read` builtin consumes one line at a time but by now each line
+# contains only a single character.
+#
+# The state machine implemented here follows very naturally from the
+# diagrams of the JSON grammar on <http://json.org>.
 _json() {
 	while read _J_C
 	do
 		echo " _J_C: $_J_C (${#_J_C}), _J_STATE: $_J_STATE" >&3
 		case "$_J_STATE" in
 
+			# The machine starts in the "whitespace" state and learns
+			# from leading characters what state to enter next.  JSON's
+			# grammar doesn't contain any tokens that are ambiguous in
+			# their first character so the parser's job is relatively
+			# easier.
+			#
+			# Further whitespace characters are consumed and ignored.
+			#
+			# Arrays are unique in that their parsing rules are a strict
+			# superset of the rules in open whitespace.  When an opening
+			# bracket is encountered, the remainder of the array is
+			# parsed in a subshell which goes around again when a comma
+			# is encountered and exits back to the containing scope when
+			# the closing bracket is encountered.
+			#
+			# Objects are not parsed as a superset of open whitespace but
+			# they are parsed in a subshell to protect the containing scope.
 			"array"|"whitespace")
 				if [ "$_J_STATE" = "array" ]
 				then
 					case "$_J_C" in
-						",")
+						",") # TODO Should not be allowed following "[".
 							_J_DIRNAME="$(dirname "$_J_PATHNAME")"
 							[ "$_J_DIRNAME" = "/" ] && _J_DIRNAME=""
 							_J_BASENAME="$(basename "$_J_PATHNAME")"
@@ -87,6 +118,10 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME";;
 				esac;;
 
+			# Boolean values are multicharacter literals but they're unique
+			# from their first character.  This means the eventual value is
+			# already known when the "boolean" state is entered so we can
+			# raise syntax errors as soon as the input goes south.
 			"boolean")
 				case "$_J_V$_J_C" in
 					"f"|"fa"|"fal"|"fals"|"t"|"tr"|"tru") _J_V="$_J_V$_J_C";;
@@ -96,6 +131,18 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME boolean $_J_V$_J_C";;
 				esac;;
 
+			# Object values are relatively more complex than array values.
+			# They begin in the "object" state, which is almost but not
+			# quite a subset of the "whitespace" state for strings.  When
+			# a string is encountered it is parsed as usual but the parser
+			# is set to return to the "object-value" state afterward.
+			#
+			# As in the "whitespace" state, extra whitespace characters
+			# are consumed and ignored.
+			#
+			# The parser will return to this "object" state later to
+			# either consume a comma and go around again or exit the
+			# subshell in which this object has been parsed.
 			"object")
 				case "$_J_C" in
 					"\"")
@@ -109,8 +156,14 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME";;
 				esac;;
 
+			# Object values are going to have to return from whence they
+			# came and use the "object-exit" state to do so.
 			"object-exit") exit;;
 
+			# After a string key has been consumed, the state machine
+			# progresses here where a colon and a value are parsed.  The
+			# value is parsed in a subshell so the pathname can have the
+			# key appended to it before the parser continues.
 			"object-value")
 				case "$_J_C" in
 					":")
@@ -127,6 +180,7 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME";;
 				esac;;
 
+			# Null values work exactly like boolean values.  See above.
 			"null")
 				case "$_J_V$_J_C" in
 					"n"|"nu"|"nul") _J_V="$_J_V$_J_C";;
@@ -136,6 +190,10 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME null $_J_V$_J_C";;
 				esac;;
 
+			# Numbers that encounter a '.' become floating point and may
+			# continue consuming digits forever or may become
+			# scientific-notation.  Any other character sends the parser
+			# back to its default state.
 			"number-float")
 				case "$_J_C" in
 					[0-9]) _J_V="$_J_V$_J_C";;
@@ -145,6 +203,12 @@ _json() {
 						echo "$_J_PATHNAME number $_J_V" >&$_J_FD;;
 				esac;;
 
+			# This is an entrypoint into parsing a number, used when
+			# the first digit consumed is non-zero.  From here, a number
+			# may continue on a positive integer, become a floating-point
+			# number by consuming a '.', or become scientific-notation by
+			# consuming an 'E' or 'e'.  Any other character sends the
+			# parser back to its default state.
 			"number-leading-nonzero")
 				case "$_J_C" in
 					".") _J_STATE="number-float" _J_V="$_J_V$_J_C";;
@@ -155,6 +219,12 @@ _json() {
 						echo "$_J_PATHNAME number $_J_V" >&$_J_FD;;
 				esac;;
 
+			# This is an entrypoint into parsing a number, used when
+			# the first digit consumed is zero.  From here, a number
+			# may remain zero, become a floating-point number by
+			# consuming a '.', or become scientific-notation by consuming
+			# an 'E' or 'e'.  Any other character sends the parser back
+			# to its default state.
 			"number-leading-zero")
 				case "$_J_C" in
 					".") _J_STATE="number-float" _J_V="$_J_V$_J_C";;
@@ -165,16 +235,28 @@ _json() {
 						echo "$_J_PATHNAME number $_J_V" >&$_J_FD;;
 				esac;;
 
+			# This is an entrypoint into parsing a number, used when
+			# the first character consumed is a '-'.  From here, a number
+			# may progress to the "number-leading-nonzero" or
+			# "number-leading-zero" states.  Any other character sends
+			# the parser back to its default state.
 			"number-negative")
 				case "$_J_C" in
-					".") _J_STATE="number-float" _J_V="$_J_V$_J_C";;
-					[0-9]) _J_V="$_J_V$_J_C";;
-					"E"|"e") _J_STATE="number-sci" _J_V="$_J_V$_J_C";;
+					0) _J_STATE="number-leading-zero" _J_V="$_J_V$_J_C";;
+					[1-9])
+						_J_STATE="number-leading-nonzero"
+						_J_V="$_J_V$_J_C";;
 					*)
 						_J_STATE="$_J_STATE_DEFAULT"
 						echo "$_J_PATHNAME number $_J_V" >&$_J_FD;;
 				esac;;
 
+			# Numbers that encounter an 'E' or 'e' become
+			# scientific-notation and consume digits, optionally prefixed
+			# by a '+' or '-', forever.  The actual consumption is
+			# delegated to the "number-sci-neg" and "number-sci-pos"
+			# states.  Any other character immediately following the 'E'
+			# or 'e' is a syntax error.
 			"number-sci")
 				case "$_J_C" in
 					"+") _J_STATE="number-sci-pos" _J_V="$_J_V$_J_C";;
@@ -183,6 +265,9 @@ _json() {
 					*) _json_die "syntax: $_J_PATHNAME number $_J_V$_J_C";;
 				esac;;
 
+			# Once in these states, numbers may consume digits forever.
+			# Any other character sends the parser back to its default
+			# state.
 			"number-sci-neg"|"number-sci-pos")
 				case "$_J_C" in
 					[0-9]) _J_V="$_J_V$_J_C";;
@@ -191,6 +276,12 @@ _json() {
 						echo "$_J_PATHNAME number $_J_V" >&$_J_FD;;
 				esac;;
 
+			# Strings aren't as easy as they look.  JSON supports several
+			# escape sequences that require the state machine to keep a
+			# history of its input.  Basic backslash/newline/etc. escapes
+			# are simple because they only require one character of
+			# history.  Unicode codepoint escapes require more.  The
+			# strategy there is to add states to the machine.
 			"string")
 				case "$_J_PREV_C$_J_C" in
 					"\\\""|"\\/"|"\\\\") _J_V="$_J_V$_J_C";;
