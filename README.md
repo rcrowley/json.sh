@@ -3,6 +3,8 @@ json.sh
 
 Pure-shell [JSON](http://json.org/) parser.
 
+`json.sh` requires GNU `sed`(1).
+
 Installation
 ------------
 
