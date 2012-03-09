@@ -5,6 +5,24 @@ Pure-shell [JSON](http://json.org/) parser.
 
 `json.sh` requires GNU `sed`(1).
 
+Example
+-------
+
+Suppose `tests/mixed.json` contains the following (it does):
+
+	{
+		"foo": ["bar", "baz"],
+		"asdf": {
+			"qwerty": 47
+		}
+	}
+
+Running `json.sh <"tests/mixed.json"` yields:
+
+	/foo/0 string bar
+	/foo/1 string baz
+	/asdf/qwerty number 47
+
 Installation
 ------------
 
@@ -15,16 +33,16 @@ Usage
 
 From the command-line:
 
-	json.sh <"tests/object-complex.json"
+	json.sh <"tests/mixed.json"
 
 As a library:
 
 	. "lib/json.sh"
-	json <"tests/object-complex.json"
+	json <"tests/mixed.json"
 
 Overriding the default use of `/` as the key separator:
 
-	JSON_SEPARATOR="^" json.sh <"tests/object-complex.json"
+	JSON_SEPARATOR="^" json.sh <"tests/mixed.json"
 
 TODO
 ----
