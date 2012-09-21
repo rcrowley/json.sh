@@ -125,7 +125,7 @@ _json_char() {
 						_J_STATE="array-0" _J_STATE_DEFAULT="array-even"
 						_json
 					)
-					exit;;
+					_J_STATE="array-even" _J_V="";;
 				"f"|"t") _J_STATE="boolean" _J_V="$_J_C";;
 				"n") _J_STATE="null" _J_V="$_J_C";;
 				"{")
