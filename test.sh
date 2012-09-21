@@ -8,5 +8,5 @@ set -e
 find "tests" -type f -name "*.json" | while read PATHNAME
 do
 	echo "$PATHNAME" >&2
-	json <"$PATHNAME" | diff -u - "$PATHNAME.out"
+	json <"$PATHNAME" | diff -u "$PATHNAME.out" -
 done
