@@ -125,7 +125,7 @@ _json_char() {
 						_J_STATE="array-0" _J_STATE_DEFAULT="array-even"
 						_json
 					)
-					_J_STATE="array-even" _J_V="";;
+					_J_STATE="$_J_STATE_DEFAULT" _J_V="";;
 				"f"|"t") _J_STATE="boolean" _J_V="$_J_C";;
 				"n") _J_STATE="null" _J_V="$_J_C";;
 				"{")
@@ -133,7 +133,7 @@ _json_char() {
 						_J_STATE="object-0" _J_STATE_DEFAULT="object-even"
 						_json
 					)
-					exit;;
+					_J_STATE="$_J_STATE_DEFAULT" _J_V="";;
 				"	"|""|" ") ;;
 				*) _json_die "syntax: $_J_PATHNAME";;
 			esac;;
