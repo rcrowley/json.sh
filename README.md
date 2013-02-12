@@ -1,9 +1,7 @@
 json.sh
 =======
 
-Pure-shell [JSON](http://json.org/) parser.
-
-`json.sh` requires GNU `sed`(1).
+Pure-POSIX-shell [JSON](http://json.org/) parser.
 
 Example
 -------

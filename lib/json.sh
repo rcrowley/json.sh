@@ -43,10 +43,10 @@ json() {
 	# The subtlety is that real newline characters are chomped so they
 	# must be indirectly detected by checking for zero-length
 	# characters, which is done as the character is emitted.
-	sed -r "
-		s/./&\\n/g
+	sed "
+		s/./&$(printf "\036")/g
 		s/\\\\/\\\\\\\\/g
-	" | _json
+	" | tr "\036" "\n" | _json
 
 	# TODO Replace the original value of IFS.  Be careful if it's unset.
 
